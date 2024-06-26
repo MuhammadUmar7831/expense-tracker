@@ -1,0 +1,28 @@
+import express from "express";
+import { connectDB } from "./config/db.config.js";
+import authRouter from "./routes/auth.route.js";
+import budgetRouter from "./routes/budget.route.js";
+import expenseRouter from "./routes/expense.route.js";
+
+const app = express();
+const PORT = 3000;
+
+connectDB();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use("/api/auth", authRouter);
+app.use("/api/budget", budgetRouter);
+app.use("/api/expense", expenseRouter);
+
+app.get("/", (req, res) => {
+  return res.status(200).send({ message: "Expense Tracker Base Route" });
+});
+
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.status(500).send({ success: false, message: "Server Error" });
+});
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
