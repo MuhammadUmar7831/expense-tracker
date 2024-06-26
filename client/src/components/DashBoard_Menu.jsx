@@ -1,5 +1,7 @@
-import React from "react";
-
-export default function DashBoard_Menu() {
-  return <div>DashBoard_Menu</div>;
+import React from 'react'
+function DashboardLayout({children}){
+    return(
+        <div>{children}</div>
+    )
 }
+export default layout
