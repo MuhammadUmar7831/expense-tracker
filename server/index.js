@@ -4,6 +4,7 @@ import { connectDB } from "./config/db.config.js";
 import authRouter from "./routes/auth.route.js";
 import budgetRouter from "./routes/budget.route.js";
 import expenseRouter from "./routes/expense.route.js";
+import statsRouter from "./routes/stats.route.js";
 
 const app = express();
 const PORT = 3000;
@@ -17,6 +18,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRouter);
 app.use("/api/budget", budgetRouter);
 app.use("/api/expense", expenseRouter);
+app.use("/api/stats", statsRouter);
 
 app.get("/", (req, res) => {
   return res.status(200).send({ message: "Expense Tracker Base Route" });
