@@ -21,8 +21,13 @@ app.get("/", (req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  console.log(err);
-  res.status(500).send({ success: false, message: "Server Error" });
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal server error";
+  res.status(statusCode).send({
+    success: false,
+    statusCode,
+    message,
+  });
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
