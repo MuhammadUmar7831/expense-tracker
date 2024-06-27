@@ -1,6 +1,6 @@
-import React from 'react';
-import { Avatar, Box, CssBaseline, Divider, Drawer, Grid, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography, Card, CardContent, CardHeader } from '@mui/material';
-import { Dashboard, AccountBalance, Receipt, Upgrade } from '@mui/icons-material';
+
+import { Box, CssBaseline, Divider, Drawer, Grid, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography, Card, CardContent, CardHeader } from '@mui/material';
+import { Dashboard, AccountBalance, Receipt} from '@mui/icons-material';
 
 const drawerWidth = 200;
 
@@ -19,13 +19,13 @@ export default function DashBoard_Menu() {
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
           <List>
-            {['Dashboard', 'Budgets', 'Expenses', 'Upgrade'].map((text, index) => (
+            {['Dashboard', 'Budgets', 'Expenses'].map((text, index) => (
               <ListItem button key={text}>
                 <ListItemIcon>
                   {index === 0 && <Dashboard />}
                   {index === 1 && <AccountBalance />}
                   {index === 2 && <Receipt />}
-                  {index === 3 && <Upgrade />}
+                  
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItem>
@@ -36,7 +36,7 @@ export default function DashBoard_Menu() {
           <Divider />
           <ListItem button>
             <ListItemIcon>
-              <Avatar src="path_to_profile_image.jpg" />
+              
             </ListItemIcon>
             <ListItemText primary="Profile" />
           </ListItem>
@@ -51,7 +51,7 @@ export default function DashBoard_Menu() {
           Hi, nooran tahir ✌
         </Typography>
         <Typography variant="subtitle1" gutterBottom marginLeft={-57}>
-          Here's what happening with your money, Let's manage your expense.
+          Here I&#39;s what happening with your money, Let I&#39; s manage your expense.
         </Typography>
         <Grid container spacing={3}>
           {/* Top Cards */}
