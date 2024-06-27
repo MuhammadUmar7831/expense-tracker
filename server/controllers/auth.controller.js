@@ -1,20 +1,20 @@
-import User from '../models/user.model.js';
-import bcryptjs from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { errorHandler } from '../errors/error.js';
-import { generateStrongPassword } from '../utils/auth.utils.js';
+import User from "../models/user.model.js";
+import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { errorHandler } from "../errors/error.js";
+import { generateStrongPassword } from "../utils/auth.utils.js";
 
 export const signup = async (req, res, next) => {
-  const { name, email, password, avatar } = req.body;
-  const salt = parseInt(process.env.SALT);
-  const hashedPassword = bcryptjs.hashSync(password, salt);
-  const newUser = new User({ name, email, password: hashedPassword, avatar });
   try {
+    const { name, email, password } = req.body;
+    const salt = parseInt(process.env.SALT);
+    const hashedPassword = bcryptjs.hashSync(password, salt);
+    const newUser = new User({ name, email, password: hashedPassword });
     await newUser.save();
     const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
     const { password: pass, ...user } = newUser._doc;
     res
-      .cookie("access token", token, { httpOnly: true })
+      .cookie("access_token", token, { httpOnly: true })
       .status(201)
       .send({ user, success: true });
   } catch (error) {
@@ -27,8 +27,8 @@ export const signup = async (req, res, next) => {
 };
 
 export const signin = async (req, res, next) => {
-  const { email, password } = req.body;
   try {
+    const { email, password } = req.body;
     const validUser = await User.findOne({ email });
     if (!validUser) return next(errorHandler(404, "User not found!"));
     const validPassword = bcryptjs.compareSync(password, validUser.password);
@@ -36,7 +36,7 @@ export const signin = async (req, res, next) => {
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
     const { password: pass, ...user } = validUser._doc;
     res
-      .cookie("access token", token, { httpOnly: true })
+      .cookie("access_token", token, { httpOnly: true })
       .status(200)
       .send({ user, success: true });
   } catch (error) {
@@ -45,20 +45,24 @@ export const signin = async (req, res, next) => {
 };
 
 export const googleOAuth = async (req, res, next) => {
-  const { name, email, avatar } = req.body;
-  const user = await User.findOne({ email });
   try {
+    const { name, email } = req.body;
+    const user = await User.findOne({ email });
     if (!user) {
       // Signup with Google OAuth
       const password = generateStrongPassword();
       const salt = parseInt(process.env.SALT);
       const hashedPassword = bcryptjs.hashSync(password, salt);
-      const newUser = new User({ name, email, password: hashedPassword, avatar });
+      const newUser = new User({
+        name,
+        email,
+        password: hashedPassword,
+      });
       await newUser.save();
       const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
       const { password: pass, ...userWithoutPassword } = newUser._doc;
       res
-        .cookie("access token", token, { httpOnly: true })
+        .cookie("access_token", token, { httpOnly: true })
         .status(201)
         .send({ user: userWithoutPassword, success: true });
     } else {
@@ -66,7 +70,7 @@ export const googleOAuth = async (req, res, next) => {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
       const { password: pass, ...userWithoutPassword } = user._doc;
       res
-        .cookie("access token", token, { httpOnly: true })
+        .cookie("access_token", token, { httpOnly: true })
         .status(200)
         .send({ user: userWithoutPassword, success: true });
     }
@@ -77,9 +81,9 @@ export const googleOAuth = async (req, res, next) => {
 
 export const signout = async (req, res, next) => {
   try {
-    res.cookie('access token', null, { expires: new Date(0) });
-    res.clearCookie('access token');
-    res.status(200).send({ success: true, message: 'Signed out successfully' });
+    res.cookie("access_token", null);
+    res.clearCookie("access_token");
+    res.status(200).send({ success: true, message: "Signed out successfully" });
   } catch (error) {
     next(error);
   }

@@ -1,6 +1,6 @@
 import express from 'express';
-import { signup, signin, signout, googleOAuth } from '../controllers/auth.controller.js';
-import { authenticate } from '../middleware/authenticate.js';
+import { authenticate } from '../middlewares/authenticate.js';
+import { googleOAuth, signin, signout, signup } from '../controllers/auth.controller.js';
 
 const router = express.Router();
 
