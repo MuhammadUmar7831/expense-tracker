@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import DashBoard from "./pages/DashBoard";
-
+import DashBoard_Menu from './components/DashBoard_Menu';
 function App() {
   return (
     <>
@@ -14,6 +14,7 @@ function App() {
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/dashboard/*" element={<DashBoard />} />
+          <Route path="/dashboard_Menu/*" element={<DashBoard_Menu />} />
         </Routes>
       </BrowserRouter>
     </>
