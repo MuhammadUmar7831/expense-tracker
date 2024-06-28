@@ -4,11 +4,13 @@ import { Route, Routes } from "react-router-dom";
 import Stats from "./Stats";
 import Budget from "./Budget";
 import Expense from "./Expense";
+import Menu from "../components/Menu";
 
 export default function DashBoard() {
   return (
     <div>
-      <DashBoard_Menu />
+      {/* <DashBoard_Menu /> */}
+      <Menu />
       <Routes>
         <Route path="/" element={<Stats />} />
         <Route path="/budget" element={<Budget />} />
