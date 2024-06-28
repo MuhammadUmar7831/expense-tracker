@@ -85,3 +85,34 @@ export const recentBudgets = async (req, res, next) => {
     next(error);
   }
 };
+
+export const recentExpenses = async (req, res, next) => {
+  try {
+    const userId = req.userId;
+
+    const userBudgets = await Budget.find({ user: userId });
+
+    const promises = userBudgets.map(async (budget) => {
+      const expenses = await Expense.find({ budget: budget._id })
+        .sort({ date: -1 })
+        .limit(3);
+      return expenses;
+    });
+
+    const expensesByBudget = await Promise.all(promises);
+
+    const allExpenses = expensesByBudget.flat();
+
+    allExpenses.sort((a, b) => b.date - a.date);
+
+    const last3Expenses = allExpenses.slice(0, 3);
+
+    res.status(200).send({
+      success: true,
+      last3Expenses,
+      message: "Latest 3 expenses sent",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
