@@ -4,7 +4,7 @@ import { getExpense, addExpense, updateExpense, deleteExpense } from "../control
 const router = express.Router();
 
 router.get('/get/:expenseId', getExpense);
-router.post('/add/:expenseId', addExpense);
+router.post('/add', addExpense);
 router.put('/update/:expenseId', updateExpense);
 router.delete('/delete/:expenseId', deleteExpense);
 
