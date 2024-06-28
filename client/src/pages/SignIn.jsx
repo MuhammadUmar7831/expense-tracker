@@ -18,7 +18,7 @@ export default function SignIn() {
         <input type="email" placeholder="Email address" />
         <button type="submit">CONTINUE</button>
         <div className="bottom-text">
-          No account? <a href="#">Sign up</a>
+          Not account? <a href="#">Sign up</a>
         </div>
       </div>
     </div></>
