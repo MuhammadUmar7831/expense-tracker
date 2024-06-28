@@ -68,3 +68,20 @@ export const barchart = async (req, res, next) => {
     next(error);
   }
 };
+
+export const recentBudgets = async (req, res, next) => {
+  try {
+    const userId = req.userId;
+    const last3Budgets = await Budget.find({ user: userId })
+      .sort({ createdAt: -1 })
+      .limit(3);
+
+    res.status(200).send({
+      success: true,
+      message: "latest 3 budgets sent",
+      last3Budgets,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
