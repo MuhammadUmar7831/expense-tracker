@@ -1,4 +1,5 @@
-import { errorHandler } from "../errors/error.js";
+import mongoose from "mongoose";
+import errorHandler from "../errors/error.js";
 import jwt from "jsonwebtoken";
 
 export const authenticate = async (req, res, next) => {
@@ -6,6 +7,9 @@ export const authenticate = async (req, res, next) => {
   if (!token) return next(errorHandler(401, "Please login to continue."));
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    if (!mongoose.Types.ObjectId.isValid(decoded.id)) {
+      return next(errorHandler(404, "Invalid User"));
+    }
     req.userId = decoded.id;
     next();
   } catch (error) {
