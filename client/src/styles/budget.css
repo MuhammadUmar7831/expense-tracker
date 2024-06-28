@@ -1,0 +1,171 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    padding-left: 150px;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    width: calc(100% - 250px);
+    box-sizing: border-box;
+}
+
+.budgets-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+}
+
+.budget-card {
+    background-color: "white";
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.budget-card-create-new {
+    color: #000;
+    cursor: pointer;
+    text-decoration: underline;
+    background-color: #f4f4f4;
+    height: 150px;
+    align-content: center;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px dashed #ccc;
+    padding: 10px;
+}
+
+.budget-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.budget-dialog h3 {
+    margin-top: 0;
+}
+
+.budget-dialog label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.budget-dialog input {
+    width: calc(100% - 20px);
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.budget-dialog input::placeholder {
+    color: #ccc;
+}
+
+.budget-dialog button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin-top: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.budget-dialog button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+.budget-dialog button:hover:disabled {
+    background-color: #ddd;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+}
+
+.budget-info {
+    padding: 10px;
+}
+
+.budget-info .budget-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.budget-info .budget-amount {
+    color: #666;
+}
+
+.single-bar {
+    width: 100%;
+    height: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.single-bar .spent,
+.single-bar .remaining {
+    height: 100%;
+    display: block;
+    position: relative;
+}
+
+.single-bar .spent {
+    background-color: #ff6347;
+}
+
+.single-bar .remaining {
+    background-color: #3cb371;
+}
+
+.bar-label {
+    font-size: 12px;
+    color: #666;
+    position: absolute;
+    top: -20px;
+    white-space: nowrap;
+}
+
+.item-number {
+    font-size: 12px;
+    color: #666;
+}
