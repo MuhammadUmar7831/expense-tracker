@@ -4,7 +4,7 @@ const BudgetCard = ({ budget, openDialog }) => {
   if (!budget) {
     return (
       <div className="budget-card-create-new" onClick={openDialog}>
-        + Create New Budget
+        + <br /> Create New Budget
       </div>
     );
   }
@@ -17,19 +17,24 @@ const BudgetCard = ({ budget, openDialog }) => {
   return (
     <div className="budget-card">
       <div className="budget-info">
-        <div className="budget-name">{name}</div>
-        <div className="budget-amount">${amount}</div>
-        <div className="item-number">0 Items</div>
-      </div>
-      <div className="single-bar">
-        <div className="spent" style={{ width: `${spentPercentage}%` }}>
-          <span className="bar-label">Spent: ${spent}</span>
+        <div className="budget-name-items">
+          <div className="budget-name">{name}</div>
+          <div className="item-number">0 Items</div>
         </div>
-        <div className="remaining" style={{ width: `${remainingPercentage}%` }}>
-          <span className="bar-label">Remaining: ${remaining}</span>
+        <div className="budget-amount">${amount}</div>
+      </div>
+      <div className="single-bar-container">
+        <div className="single-bar-labels">
+          <span>Spent: ${spent}</span>
+          <span>Remaining: ${remaining}</span>
+        </div>
+        <div className="single-bar">
+          <div className="spent" style={{ width: `${spentPercentage}%` }}></div>
+          <div className="remaining" style={{ width: `${remainingPercentage}%` }}></div>
         </div>
       </div>
     </div>
   );
 };
+
 export default BudgetCard;
