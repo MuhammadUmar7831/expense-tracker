@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import Stats from "./Stats";
 import Budget from "./Budget";
 import Expense from "./Expense";
+import myexpense from "./myexpense";
 
 export default function DashBoard() {
   return (
@@ -13,6 +14,8 @@ export default function DashBoard() {
         <Route path="/" element={<Stats />} />
         <Route path="/budget" element={<Budget />} />
         <Route path="/expense" element={<Expense />} />
+        <Route path="/myexpense" element={<myexpense />} />
+
       </Routes>
     </div>
   );
