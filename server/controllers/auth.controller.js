@@ -1,7 +1,7 @@
 import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { errorHandler } from "../errors/error.js";
+import errorHandler from "../errors/error.js";
 import { generateStrongPassword } from "../utils/auth.utils.js";
 
 export const signup = async (req, res, next) => {
