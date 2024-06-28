@@ -1,0 +1,27 @@
+.expense-table {
+    width: 800px; 
+    border-collapse: collapse;
+    color: #000;
+} 
+  .expense-table th, .expense-table td {
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .expense-table th {
+    background-color: #ccddf0;
+    
+  }
+  .expense-table tr{
+    background-color: #f8f8f8;;
+  }
+  .expense-table tr:hover {
+    background-color: #d7dadb;
+  }
+  
+  .expense-table th, .expense-table td {
+    border: none;
+  }
+  
+ 
+
