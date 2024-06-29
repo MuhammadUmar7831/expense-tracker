@@ -41,14 +41,14 @@ const ExpenseList = ({ expenses, editExpense, deleteExpense }) => {
                 value={editedAmount}
                 onChange={(e) => setEditedAmount(e.target.value)}
               />
-              <button onClick={handleSaveClick}>Save</button>
+              <button onClick={handleSaveClick} className="edit">Save</button>
               <button onClick={handleCancelClick}>Cancel</button>
             </>
           ) : (
             <>
               <span className="description">{expense.description}</span>
               <span className="amount">${expense.amount}</span>
-              <button onClick={() => handleEditClick(expense)}>Edit</button>
+              <button onClick={() => handleEditClick(expense)} className="edit">Edit</button>
               <button onClick={() => deleteExpense(expense.id)}>Delete</button>
             </>
           )}
