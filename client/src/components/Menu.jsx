@@ -38,7 +38,7 @@ export default function Menu({ isOpen, toggleMenu }) {
             <span>Budgets</span>
           </Link>
           <Link
-            to="/dashboard/expense"
+            to="/MyExpenses"
             onClick={() => {
               toggleMenu(false);
             }}

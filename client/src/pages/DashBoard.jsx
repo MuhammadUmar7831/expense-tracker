@@ -5,7 +5,7 @@ import Stats from "./Stats";
 import Budget from "./Budget";
 import Expense from "./Expense";
 import Menu from "../components/Menu";
-import DashboradHeader from "../components/DashboradHeader";
+import DashboradHeader from "../components/DashboardHeader";
 
 export default function DashBoard() {
   const [isOpen, toggleMenu] = useState(false);
