@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const BudgetDialog = ({ onClose, onSaveBudget }) => {
   const [budgetName, setBudgetName] = useState("");
@@ -32,12 +32,13 @@ const BudgetDialog = ({ onClose, onSaveBudget }) => {
   };
 
   // Effect to validate inputs whenever inputs change
-  React.useEffect(() => {
+  useEffect(() => {
     validateInputs();
   }, [budgetName, budgetAmount]);
 
   return (
     <div className="budget-dialog">
+      <div className="close-icon" onClick={onClose}>✖</div>
       <h3>Create New Budget</h3>
       <label>
         Budget Name:
@@ -60,7 +61,7 @@ const BudgetDialog = ({ onClose, onSaveBudget }) => {
       <button
         onClick={handleCreateBudget}
         disabled={!isButtonEnabled}
-        className={isButtonEnabled ? "" : "disabled"}
+        className={isButtonEnabled ? "enabled" : "disabled"}
       >
         Create Budget
       </button>

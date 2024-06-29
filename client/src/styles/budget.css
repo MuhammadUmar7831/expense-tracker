@@ -8,7 +8,7 @@ body {
     flex-direction: column;
     height: 100vh;
     width: 100vw;
-    padding-left: 150px;
+    padding-left: 10px;
     box-sizing: border-box;
     overflow: hidden;
     position: relative;
@@ -28,32 +28,19 @@ body {
     width: 100%;
 }
 
-.budget-card {
-    background-color: "white";
-    height: 150px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    border-radius: 8px;
-    cursor: pointer;
-    padding: 10px;
-    border: 1px solid #ccc;
-}
-
 .budget-card-create-new {
-    color: #000;
-    cursor: pointer;
-    text-decoration: underline;
-    background-color: #f4f4f4;
-    height: 150px;
-    align-content: center;
-    align-items: center;
-    justify-content: space-between;
-    border-radius: 8px;
-    cursor: pointer;
-    border: 1px dashed #ccc;
-    padding: 10px;
+  color: #000;
+  cursor: pointer;
+  background-color: #f4f4f4;
+  height: 150px;
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px dashed #ccc;
+  padding: 10px;
+  text-align: center; 
 }
 
 .budget-dialog {
@@ -66,15 +53,20 @@ body {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
+    width: 40%;
 }
 
 .budget-dialog h3 {
     margin-top: 0;
+    font-weight: 800;
+    color: black;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
 }
 
 .budget-dialog label {
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .budget-dialog input {
@@ -90,7 +82,6 @@ body {
 }
 
 .budget-dialog button {
-    background-color: #4caf50;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -101,15 +92,24 @@ body {
     margin-top: 10px;
     border-radius: 4px;
     cursor: pointer;
+    width: calc(100% - 20px);
+    background-color: #ddd;
+  
 }
 
-.budget-dialog button:disabled {
+.budget-dialog button.enabled {
+    background-color: blue;
+ 
+}
+
+.budget-dialog button.disabled {
     background-color: #ddd;
     cursor: not-allowed;
 }
 
-.budget-dialog button:hover:disabled {
-    background-color: #ddd;
+.budget-dialog button.enabled:hover {
+    background-color: darkblue;
+  
 }
 
 .overlay {
@@ -122,17 +122,68 @@ body {
     z-index: 999;
 }
 
-.budget-info {
+
+.budget-card {
+    background-color: white;
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 8px;
+    cursor: pointer;
     padding: 10px;
+    border: 1px solid #ccc;
 }
 
-.budget-info .budget-name {
+.budget-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.budget-name-items {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.budget-name {
     font-weight: bold;
     margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 1.1rem;
 }
 
-.budget-info .budget-amount {
+.budget-amount {
+    font-weight: bold;
     color: #666;
+    align-self: flex-end;
+    color: blue;
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+
+.single-bar-container {
+    position: relative;
+    width: 100%;
+    padding-top: 20px;
+    margin-bottom: 20px;
+    
+}
+
+.single-bar-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #666;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
+    
 }
 
 .single-bar {
@@ -140,6 +191,8 @@ body {
     height: 10px;
     display: flex;
     flex-direction: row;
+    border-radius: 5px;
+    overflow: hidden; 
 }
 
 .single-bar .spent,
@@ -157,15 +210,41 @@ body {
     background-color: #3cb371;
 }
 
-.bar-label {
-    font-size: 12px;
-    color: #666;
-    position: absolute;
-    top: -20px;
-    white-space: nowrap;
-}
-
 .item-number {
     font-size: 12px;
     color: #666;
+}
+
+
+
+.main-content h2 {
+    font-weight: 800;
+    color: black;
+    font-size: 1.7rem;
+    margin-bottom: 20px;
+}
+
+.close-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 16px;
+    color: black;
+    cursor: pointer;
+}
+
+.close-icon:hover {
+    color: red;
+}
+
+button.enabled {
+    background-color: green;
+    color: white;
+    cursor: pointer;
+}
+
+button.disabled {
+    background-color: grey;
+    color: white;
+    cursor: not-allowed;
 }
