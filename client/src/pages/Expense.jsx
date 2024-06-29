@@ -3,7 +3,7 @@ import "../styles/expense.css";
 
 const Expense = () => {
   return (
-    <table className="expense-table">
+    <table className="expense-table" >
       <thead>
         <tr>
           <th>Name</th>
