@@ -1,12 +1,14 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const BudgetCard = ({ budget, openDialog }) => {
+  const navigate = useNavigate();
+
   const handleCardClick = () => {
     if (budget) {
-      
-      // window.location.href = `/expenses/${budget.id}`; 
-      window.location.href = `./pages/MyExpenses`; 
+      console.log('before');
+      navigate('/myexpenses'); // Use navigate for navigation
+      console.log('after');
     } else {
       openDialog(); // Open the dialog to create a new budget
     }
@@ -26,8 +28,8 @@ const BudgetCard = ({ budget, openDialog }) => {
   const remainingPercentage = (remaining / amount) * 100;
 
   return (
-    <Link to={`/expenses/${budget.id}`} className="budget-card-link">
-      <div className="budget-card" onClick={handleCardClick}>
+    <div className="budget-card-link" onClick={handleCardClick}>
+      <div className="budget-card">
         <div className="budget-info">
           <div className="budget-name-items">
             <div className="budget-name">{name}</div>
@@ -46,7 +48,7 @@ const BudgetCard = ({ budget, openDialog }) => {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 

@@ -3,14 +3,15 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import ExpenseList from "../components/ExpenseList"; // Assuming this component lists expenses
 import ExpenseForm from "../components/ExpenseForm"; // Assuming this component handles adding/editing expenses
+import "../styles/MyExpenses.css"; // Import the CSS file
 
 const MyExpenses = () => {
   const { budgetId } = useParams(); // Get budgetId from URL params
   const [expenses, setExpenses] = useState([
     // Example initial list of expenses
-    { id: 1, description: "Rent", amount: 1000 },
-    { id: 2, description: "Utilities", amount: 300 },
-    { id: 3, description: "Groceries", amount: 200 },
+    // { id: 1, description: "Rent", amount: 1000 },
+    // { id: 2, description: "Utilities", amount: 300 },
+    // { id: 3, description: "Groceries", amount: 200 },
   ]);
 
   const addExpense = (newExpense) => {

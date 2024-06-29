@@ -1,20 +1,59 @@
 // ExpenseList.jsx
-import React from "react";
+import React, { useState } from "react";
 
 const ExpenseList = ({ expenses, editExpense, deleteExpense }) => {
+  const [editingId, setEditingId] = useState(null);
+  const [editedDescription, setEditedDescription] = useState("");
+  const [editedAmount, setEditedAmount] = useState("");
+
+  const handleEditClick = (expense) => {
+    setEditingId(expense.id);
+    setEditedDescription(expense.description);
+    setEditedAmount(expense.amount);
+  };
+
+  const handleSaveClick = () => {
+    editExpense({ id: editingId, description: editedDescription, amount: editedAmount });
+    setEditingId(null);
+    setEditedDescription("");
+    setEditedAmount("");
+  };
+
+  const handleCancelClick = () => {
+    setEditingId(null);
+    setEditedDescription("");
+    setEditedAmount("");
+  };
+
   return (
     <div className="expense-list">
-      <h3>Expense List</h3>
-      <ul>
-        {expenses.map((expense) => (
-          <li key={expense.id}>
-            <div>{expense.description}</div>
-            <div>${expense.amount}</div>
-            <button onClick={() => editExpense({ ...expense, amount: expense.amount + 100 })}>Edit</button>
-            <button onClick={() => deleteExpense(expense.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+      {expenses.map((expense) => (
+        <div key={expense.id} className="expense-item">
+          {editingId === expense.id ? (
+            <>
+              <input
+                type="text"
+                value={editedDescription}
+                onChange={(e) => setEditedDescription(e.target.value)}
+              />
+              <input
+                type="number"
+                value={editedAmount}
+                onChange={(e) => setEditedAmount(e.target.value)}
+              />
+              <button onClick={handleSaveClick}>Save</button>
+              <button onClick={handleCancelClick}>Cancel</button>
+            </>
+          ) : (
+            <>
+              <span className="description">{expense.description}</span>
+              <span className="amount">${expense.amount}</span>
+              <button onClick={() => handleEditClick(expense)}>Edit</button>
+              <button onClick={() => deleteExpense(expense.id)}>Delete</button>
+            </>
+          )}
+        </div>
+      ))}
     </div>
   );
 };
