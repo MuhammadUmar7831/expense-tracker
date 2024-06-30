@@ -2,7 +2,6 @@ import React from "react";
 import "../styles/expense.css";
 
 const Expense = () => {
-
   const expenses = [
     {
       _id: "667c2aab83f80556039adeb1",
@@ -172,26 +171,30 @@ const Expense = () => {
     return date.toLocaleDateString("en-US", options);
   };
   return (
-    <table className="expense-table" >
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Amount</th>
-          <th>Date</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-          expenses.map((row,i)=>(
+    <div className="flex flex-col gap-5 items-center justify-center p-2">
+      <div className="w-[90%] mt-10">
+        <h1 className="text-3xl font-semibold">My Expenses</h1>
+        <p className="text-lg mt-2">Latest Expenses</p>
+      </div>
+      <table className="expense-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {expenses.map((row, i) => (
             <tr>
               <td>{row.name}</td>
               <td>{row.amount}</td>
               <td>{formatDate(row.date)}</td>
             </tr>
-          ))
-        }
-      </tbody>
-    </table>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
