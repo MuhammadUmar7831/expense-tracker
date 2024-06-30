@@ -1,5 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import './Stats.css'; // Assuming you define styles here
+import React, { useEffect, useState } from "react";
+import OverviewCard from "../components/Stats/OverviewCard";
+import BudgetIcon from "../interface/Svgs/BudgetIcon";
+import ExpenseIcon from "../interface/Svgs/ExpenseIcon";
+import NumberIcon from "../interface/Svgs/NumberIcon";
+import "../styles/Stats.css";
 
 const Stats = () => {
   const [totalBudget, setTotalBudget] = useState(0);
@@ -11,22 +15,21 @@ const Stats = () => {
     const fetchData = async () => {
       try {
         // Fetch total budget, total spend, and number of budgets
-        const response = await fetch('/api/overview', {
-          method: 'GET',
+        const response = await fetch("/api/overview", {
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
-            
+            "Content-Type": "application/json",
           },
         });
         if (!response.ok) {
-          throw new Error('Failed to fetch data');
+          throw new Error("Failed to fetch data");
         }
         const data = await response.json();
         setTotalBudget(data.netBudgetAmount);
         setTotalSpend(data.netSpendingAmount);
         setNumOfBudgets(data.netBudgets);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
         // Handle error or set default values
       }
     };
@@ -41,27 +44,21 @@ const Stats = () => {
 
   return (
     <div className="stats">
-      <div className="stat-card">
-        <div className="stat-icon">&#128176;</div> {/* Money bag emoji */}
-        <div className="stat-info">
-          <p className="stat-title">Total Budget</p>
-          <p className="stat-value">${totalBudget}</p>
-        </div>
-      </div>
-      <div className="stat-card">
-        <div className="stat-icon">&#128221;</div> {/* Memo emoji */}
-        <div className="stat-info">
-          <p className="stat-title">Total Spend</p>
-          <p className="stat-value">${totalSpend}</p>
-        </div>
-      </div>
-      <div className="stat-card">
-        <div className="stat-icon">&#128221;</div> {/* Memo emoji */}
-        <div className="stat-info">
-          <p className="stat-title">No. Of Budget</p>
-          <p className="stat-value">{numOfBudgets}</p>
-        </div>
-      </div>
+      <OverviewCard
+        heading={"Total Budget"}
+        text={totalBudget}
+        icon={<BudgetIcon className={"w-8 h-8 text-gray-900"} />}
+      />
+      <OverviewCard
+        heading={"Total Spend"}
+        text={totalBudget}
+        icon={<ExpenseIcon className={"w-8 h-8 text-gray-900"} />}
+      />
+      <OverviewCard
+        heading={"No. Of Budget"}
+        text={numOfBudgets}
+        icon={<NumberIcon className={"w-8 h-8 text-gray-900"} />}
+      />
     </div>
   );
 };
