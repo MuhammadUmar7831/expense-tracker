@@ -30,13 +30,12 @@
  
   @media (max-width: 768px) {
     .expense-table {
-      margin-left: auto; /* Center table on smaller screens */
+      margin-left: auto; 
       margin-right: auto;
     }
   
     .expense-table th,
     .expense-table td {
-      /* Adjust font size or other styles for better readability */
       font-size: 14px;
     }
   }
