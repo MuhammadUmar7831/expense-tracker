@@ -1,53 +1,78 @@
 import Expense from "../models/Expense.Model.js";
 import errorHandler from "../errors/error.js";
 import Budget from "../models/Budget.Model.js";
+import mongoose from "mongoose";
 
 export const getExpense = async (req, res, next) => {
   try {
     const { expensesIds } = req;
-    if (!expensesIds || expensesIds.length === 0) {
-      return next(errorHandler(404, "No expenses found for user"));
+    let expenses = [];
+    if (expensesIds.length > 0) {
+      expenses = await Expense.find({ _id: { $in: expensesIds } });
     }
-    const expenses = await Expense.find({ _id: { $in: expensesIds } });
-    res.status(200).send({ success: true, message: "Expenses retrieved", expenses });
+    res
+      .status(200)
+      .send({ success: true, message: "Expenses retrieved", expenses });
   } catch (error) {
     next(error);
   }
 };
-
 
 export const getExpensesByBudget = async (req, res, next) => {
   try {
     const { budgetId } = req.params;
+    // handle the case if the budgetId is not the budget of logged in (authenticated) user
+    // const userId = req.userId //contain the userId of the logged in (authenticated) user
     const expenses = await Expense.find({ budget: budgetId });
 
-    if (!expenses || expenses.length === 0) {
-      return next(errorHandler(404, "No expenses found for this budget"));
-    }
+    // no need for this error reponse for UI purpose
+    // if (!expenses || expenses.length === 0) {
+    //   return next(errorHandler(404, "No expenses found for this budget"));
+    // }
 
-    res.status(200).send({ success: true, message: "Expenses Retrieved", expenses });
+    res
+      .status(200)
+      .send({ success: true, message: "Expenses Retrieved", expenses });
   } catch (error) {
     next(error);
   }
 };
 
-
 export const addExpense = async (req, res, next) => {
   try {
     const { name, amount, date, budget } = req.body;
+    const userId = req.userId;
 
+    // case if budget is not valid object id
+    if (!mongoose.Types.ObjectId.isValid(budget)) {
+      return next(errorHandler(400, "Invalid Budget id"));
+    }
     const budgetData = await Budget.findById(budget);
     if (!budgetData) {
       return next(errorHandler(404, "Budget not found"));
     }
 
-    const currentExpenses = await Expense.find({ budget }).select("amount");
-    const totalExpenses = currentExpenses.reduce((total, expense) => total + expense.amount, 0);
-    
-    if (totalExpenses + amount > budgetData.amount) {
-      return next(errorHandler(400, "Total expenses exceed the budget amount"));
+    // case if the budget in which i want to add expense does not belongs to the user
+    if (budgetData.user.toString() !== userId) {
+      return next(
+        errorHandler(
+          400,
+          "Forbidden! You are not allowed to add expense in this budget"
+        )
+      );
     }
-    
+
+    const currentExpenses = await Expense.find({ budget }).select("amount");
+    const totalExpenses = currentExpenses.reduce(
+      (total, expense) => total + expense.amount,
+      0
+    );
+
+    if (totalExpenses + amount > budgetData.amount) {
+      return next(
+        errorHandler(400, "Total spendings exceed the budget amount")
+      );
+    }
 
     const newExpense = new Expense({ name, amount, date, budget });
     const savedExpense = await newExpense.save();
@@ -62,30 +87,37 @@ export const addExpense = async (req, res, next) => {
 export const updateExpense = async (req, res, next) => {
   try {
     const { expenseId } = req.params;
-    const { name, amount, date, budget } = req.bodyل;
-    const { expenseIds } = req;
+    const { name, amount, date, budget } = req.body;
+    const { expensesIds } = req;
 
-    if (!expenseId) {
-      return next(errorHandler(400, "Id is required"));
+    // no need for this error
+    // if (!expenseId) {
+    //   return next(errorHandler(400, "Id is required"));
+    // }
+
+    // if (!expensesIds || !Array.isArray(expensesIds)) {
+    //   return next(errorHandler(400, "Invalid Format"));
+    // }
+    // wanted this not the the above if
+    if (!mongoose.Types.ObjectId.isValid(expenseId)) {
+      return next(errorHandler(400, "Invalid expense id"));
+    }
+    if (!mongoose.Types.ObjectId.isValid(budget)) {
+      return next(errorHandler(400, "Invalid budget id"));
     }
 
-
-    if (!expenseIds || !Array.isArray(expenseIds)) {
-      return next(errorHandler(400, "Invalid Format"));
-    }
-
-    let expenseToDelete = false;
-    for (const _expenseId of expenseIds) {
+    let expenseToUpdate = false;
+    for (const _expenseId of expensesIds) {
       if (_expenseId.toString() === expenseId) {
-        expenseToDelete = true;
+        expenseToUpdate = true;
         break;
       }
     }
 
     // throw error in case expense not found
-    if (!expenseToDelete) {
+    if (!expenseToUpdate) {
       return next(
-        errorHandler(403, "You are not allowed to delete this expense")
+        errorHandler(403, "You are not allowed to update this expense")
       );
     }
 
@@ -95,9 +127,19 @@ export const updateExpense = async (req, res, next) => {
     }
 
     const currentExpenses = await Expense.find({ budget }).select("amount");
-    const totalExpenses = currentExpenses.reduce((total, expense) => total + expense.amount, 0);
-    
-    if (totalExpenses + amount > budgetData.amount) {
+    const totalExpenses = currentExpenses.reduce(
+      (total, expense) => total + expense.amount,
+      0
+    );
+
+    const expenseData = await Expense.findById(expenseId);
+    if (expenseData.budget.toString() !== budgetData._id.toString()) {
+      return next(
+        errorHandler(400, "This Expense does not belongs to the given budget")
+      );
+    }
+                                // also we have to minus the previous amount
+    if (totalExpenses + amount - expenseData.amount > budgetData.amount) {
       return next(errorHandler(400, "Total expenses exceed the budget amount"));
     }
 
@@ -106,10 +148,11 @@ export const updateExpense = async (req, res, next) => {
       { name, amount, date, budget },
       { new: true }
     );
-    
-    if (!updatedExpense) {
-      return next(errorHandler(404, "Expense not found"));
-    }
+
+    // no need for this (above if the user is allowed to update this expense means that this expense does exist)
+    // if (!updatedExpense) {
+    //   return next(errorHandler(404, "Expense not found"));
+    // }
     res
       .status(200)
       .send({ success: true, message: "Expense Updated", updatedExpense });
@@ -127,9 +170,12 @@ export const deleteExpense = async (req, res, next) => {
       return next(errorHandler(400, "Id is required"));
     }
 
-
-    if (!expensesIds || !Array.isArray(expensesIds)) {
-      return next(errorHandler(400, "Invalid Format"));
+    // if (!expensesIds || !Array.isArray(expensesIds)) {
+    //   return next(errorHandler(400, "Invalid Format"));
+    // }
+    // wanted this not the the above if
+    if (!mongoose.Types.ObjectId.isValid(expenseId)) {
+      return next(errorHandler(400, "Invalid expense id"));
     }
 
     let expenseToDelete = false;

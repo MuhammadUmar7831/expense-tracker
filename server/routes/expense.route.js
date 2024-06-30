@@ -11,10 +11,20 @@ import { authenticate } from "../middlewares/authenticate.js";
 import getExpensesByUserId from "../middlewares/getExpensesByUserId.js";
 const router = express.Router();
 
-router.get("/get", authenticate,getExpensesByUserId, getExpense);
+router.get("/get", authenticate, getExpensesByUserId, getExpense);
 router.post("/add", authenticate, addExpense);
-router.put("/update/:expenseId", authenticate, getExpensesByUserId,updateExpense);
-router.delete("/delete/:expenseId", authenticate, getExpensesByUserId, deleteExpense);
-router.get('/expenses/budget/:budgetId',authenticate, getExpensesByBudget);
+router.put(
+  "/update/:expenseId",
+  authenticate,
+  getExpensesByUserId,
+  updateExpense
+);
+router.delete(
+  "/delete/:expenseId",
+  authenticate,
+  getExpensesByUserId,
+  deleteExpense
+);
+router.get("/get/budget/:budgetId", authenticate, getExpensesByBudget);
 
 export default router;
