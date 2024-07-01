@@ -1,12 +1,12 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const BudgetCard = ({ budget, openDialog }) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
     if (budget) {
-      navigate('/BudgetDetail');
+      navigate("/BudgetDetail", { state: { budget } });
     } else {
       openDialog();
     }

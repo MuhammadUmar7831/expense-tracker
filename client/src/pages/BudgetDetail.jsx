@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import BudgetCard from "../components/Budget/BudgetCard";
@@ -8,12 +8,21 @@ import "../styles/budgetDetail.css";
 
 const BudgetDetail = () => {
   const { budgetId } = useParams();
+  const location = useLocation();
+  const passedBudget = location.state?.budget;
 
   // State for budget and expenses
-  const [budget, setBudget] = useState(null); // Initialize with null, will be set when creating new budget
+  const [budget, setBudget] = useState(passedBudget || null);
   const [expenses, setExpenses] = useState([]);
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
+
+  useEffect(() => {
+    if (!budget) {
+      // If budget is not passed, open the dialog to create a new budget
+      openDialog();
+    }
+  }, [budget]);
 
   // Function to handle creation of budget from BudgetDialog
   const handleSaveBudget = (newBudget) => {
@@ -35,7 +44,15 @@ const BudgetDetail = () => {
         amount: parseFloat(amount),
         date: new Date().toLocaleDateString(),
       };
+
+      // Update total spent
+      const updatedBudget = {
+        ...budget,
+        spent: budget.spent + parseFloat(amount),
+      };
+
       setExpenses([...expenses, newExpense]);
+      setBudget(updatedBudget);
       setName("");
       setAmount("");
     }
@@ -43,16 +60,22 @@ const BudgetDetail = () => {
 
   // Function to edit expense
   const editExpense = (editedExpense) => {
-    setExpenses(
-      expenses.map((expense) =>
-        expense.id === editedExpense.id ? editedExpense : expense
-      )
+    const updatedExpenses = expenses.map((expense) =>
+      expense.id === editedExpense.id ? editedExpense : expense
     );
+    setExpenses(updatedExpenses);
+
+    const totalSpent = updatedExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+    setBudget({ ...budget, spent: totalSpent });
   };
 
   // Function to delete expense
   const deleteExpense = (expenseId) => {
-    setExpenses(expenses.filter((expense) => expense.id !== expenseId));
+    const updatedExpenses = expenses.filter((expense) => expense.id !== expenseId);
+    setExpenses(updatedExpenses);
+
+    const totalSpent = updatedExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+    setBudget({ ...budget, spent: totalSpent });
   };
 
   // Function to edit budget
@@ -156,7 +179,7 @@ const BudgetDetail = () => {
             {expenses.map((expense) => (
               <tr key={expense.id}>
                 <td className="border px-4 py-2">{expense.name}</td>
-                <td className="border px-4 py-2">{expense.amount}</td>
+                <td className="border px-4 py-2">${expense.amount.toFixed(2)}</td>
                 <td className="border px-4 py-2">{expense.date}</td>
                 <td className="border px-4 py-2">
                   <FontAwesomeIcon
