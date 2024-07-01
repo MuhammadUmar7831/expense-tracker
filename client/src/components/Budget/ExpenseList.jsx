@@ -11,14 +11,15 @@ const ExpenseList = ({ expenses, editExpense, deleteExpense }) => {
     setEditedAmount(expense.amount);
   };
 
-  const handleSaveClick = () => {
+  const handleSave = (event) => {
+    event.preventDefault();
     editExpense({ id: editingId, description: editedDescription, amount: editedAmount });
     setEditingId(null);
     setEditedDescription("");
     setEditedAmount("");
   };
 
-  const handleCancelClick = () => {
+  const handleCancel = () => {
     setEditingId(null);
     setEditedDescription("");
     setEditedAmount("");
@@ -29,7 +30,7 @@ const ExpenseList = ({ expenses, editExpense, deleteExpense }) => {
       {expenses.map((expense) => (
         <div key={expense.id} className="expense-item">
           {editingId === expense.id ? (
-            <>
+            <form onSubmit={handleSave} onReset={handleCancel}>
               <input
                 type="text"
                 value={editedDescription}
@@ -40,9 +41,9 @@ const ExpenseList = ({ expenses, editExpense, deleteExpense }) => {
                 value={editedAmount}
                 onChange={(e) => setEditedAmount(e.target.value)}
               />
-              <button onClick={handleSaveClick} className="edit">Save</button>
-              <button onClick={handleCancelClick}>Cancel</button>
-            </>
+              <button type="submit" className="edit">Save</button>
+              <button type="reset">Cancel</button>
+            </form>
           ) : (
             <>
               <span className="description">{expense.description}</span>

@@ -1,120 +1,65 @@
-/* MyExpenses.css */
+/* budgetDetail.css */
 
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f0f4f8;
-    color: #333;
-  }
-  
-  .my-expenses {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .my-expenses h2 {
-    font-size: 28px;
-    margin-bottom: 20px;
-    text-align: center;
-    color: #2c3e50;
-  }
-  
-  .expense-form {
-    margin-bottom: 30px;
-    padding: 20px;
-    background-color: #fafafa;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-  }
-  
-  .expense-form input,
-  .expense-form button {
-    width: calc(50% - 10px);
-    padding: 12px;
-    margin: 5px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-  }
-  
-  .expense-form input {
-    background-color: #fff;
-  }
-  
-  .expense-form button {
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .expense-form button:hover {
-    background-color: #2980b9;
-  }
-  
-  .expense-list {
-    margin-top: 20px;
-  }
-  
-  .expense-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    margin-bottom: 15px;
-    background-color: #fdfdfd;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .expense-item:hover {
-    background-color: #f1f1f1;
-  }
-  
-  .expense-item .description {
-    font-size: 18px;
-    color: #34495e;
-    flex: 1;
-    margin-right: 20px;
-  }
-  
-  .expense-item .amount {
-    font-size: 18px;
-    color: #2c3e50;
-    margin-right: 20px;
-  }
-  
-  .expense-item input {
-    flex: 1;
-    padding: 10px;
-    margin-right: 10px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-  }
-  
-  .expense-item button {
-    padding: 10px 15px;
-    margin-left: 5px;
-    background-color: #e74c3c;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .expense-item button:hover {
-    background-color: #c0392b;
-  }
-  
-  .expense-item button.edit {
-    background-color: #f39c12;
-  }
-  
-  .expense-item button.edit:hover {
-    background-color: #e67e22;
-  }
-  
+.budget-detail {
+  padding: 20px;
+}
+
+.budget-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.budget-card-container {
+  width: 250px;
+}
+
+.add-expense-card {
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.add-expense-form {
+  max-width: 400px;
+  margin: auto;
+}
+
+.add-expense-form h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.add-expense-form form {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-expense-form label {
+  margin-bottom: 10px;
+}
+
+.add-expense-form input {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.add-expense-form button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-expense-form button:hover {
+  background-color: rgba(59,130,246,.5);
+}

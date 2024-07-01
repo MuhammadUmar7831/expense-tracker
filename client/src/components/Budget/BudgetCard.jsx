@@ -6,11 +6,9 @@ const BudgetCard = ({ budget, openDialog }) => {
 
   const handleCardClick = () => {
     if (budget) {
-      console.log('before');
-      navigate('/myexpenses'); // Use navigate for navigation
-      console.log('after');
+      navigate('/BudgetDetail');
     } else {
-      openDialog(); // Open the dialog to create a new budget
+      openDialog();
     }
   };
 
