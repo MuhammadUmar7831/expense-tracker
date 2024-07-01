@@ -16,7 +16,7 @@ export const signup = async (req, res, next) => {
     res
       .cookie("access_token", token, { httpOnly: true })
       .status(201)
-      .send({ user, success: true });
+      .send({ user, success: true, message: "User Registered" });
   } catch (error) {
     if (error.code === 11000) {
       next(errorHandler(400, "Email already registered"));
@@ -38,7 +38,7 @@ export const signin = async (req, res, next) => {
     res
       .cookie("access_token", token, { httpOnly: true })
       .status(200)
-      .send({ user, success: true });
+      .send({ user, success: true, message: "User Logged in" });
   } catch (error) {
     next(error);
   }
@@ -61,18 +61,20 @@ export const googleOAuth = async (req, res, next) => {
       await newUser.save();
       const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
       const { password: pass, ...userWithoutPassword } = newUser._doc;
-      res
-        .cookie("access_token", token, { httpOnly: true })
-        .status(201)
-        .send({ user: userWithoutPassword, success: true });
+      res.cookie("access_token", token, { httpOnly: true }).status(201).send({
+        user: userWithoutPassword,
+        success: true,
+        message: "User Registered",
+      });
     } else {
       // Signin with Google OAuth
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
       const { password: pass, ...userWithoutPassword } = user._doc;
-      res
-        .cookie("access_token", token, { httpOnly: true })
-        .status(200)
-        .send({ user: userWithoutPassword, success: true });
+      res.cookie("access_token", token, { httpOnly: true }).status(200).send({
+        user: userWithoutPassword,
+        success: true,
+        message: "User Logged in",
+      });
     }
   } catch (error) {
     next(error);
@@ -83,7 +85,7 @@ export const signout = async (req, res, next) => {
   try {
     res.cookie("access_token", null);
     res.clearCookie("access_token");
-    res.status(200).send({ success: true, message: "Signed out successfully" });
+    res.status(200).send({ success: true, message: "Signed out" });
   } catch (error) {
     next(error);
   }

@@ -1,46 +1,53 @@
-import axios from 'axios';
+import axios from "axios";
+import API_BASE_URL from "../config/API.config";
 
-const API_URL = '/api/auth/';
-
-const signup = async (userData) => {
+export const signup = async (userData) => {
   try {
-    const response = await axios.post(`${API_URL}signup`, userData);
+    const response = await axios.post(
+      `${API_BASE_URL}/api/auth/signup`,
+      userData,
+      { withCredentials: true }
+    );
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+export const signin = async (userData) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/api/auth/signin`,
+      userData,
+      { withCredentials: true }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response.data;
+  }
+};
+
+export const signout = async () => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/api/auth/signout`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+export const googleOAuth = async (userData) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/api/auth/google-oauth`,
+      userData,
+      { withCredentials: true }
+    );
     return response.data;
   } catch (error) {
     throw error.response.data;
   }
-};
-
-const signin = async (userData) => {
-  try {
-    const response = await axios.post(`${API_URL}signin`, userData);
-    return response.data;
-  } catch (error) {
-    throw error.response.data;
-  }
-};
-
-const signout = async () => {
-  try {
-    const response = await axios.post(`${API_URL}signout`);
-    return response.data;
-  } catch (error) {
-    throw error.response.data;
-  }
-};
-
-const googleOAuth = async (userData) => {
-  try {
-    const response = await axios.post(`${API_URL}google-oauth`, userData);
-    return response.data;
-  } catch (error) {
-    throw error.response.data;
-  }
-};
-
-export default {
-  signup,
-  signin,
-  signout,
-  googleOAuth
 };

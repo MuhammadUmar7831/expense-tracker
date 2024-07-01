@@ -6,12 +6,14 @@ import SignUp from "./pages/SignUp";
 import DashBoard from "./pages/DashBoard";
 import Error from "./interface/ErrorToaster";
 import Success from "./interface/SuccessToaster";
+import Loading from "./interface/Loading";
 
 function App() {
   return (
     <>
       <Error />
       <Success />
+      <Loading />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
