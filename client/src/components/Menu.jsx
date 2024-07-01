@@ -9,7 +9,8 @@ export default function Menu({ isOpen, toggleMenu }) {
   const navigate = useNavigate();
   return (
     <motion.div
-      initial={{ x: "0%" }}
+      // initial={{ x: "0%" }}
+      initial={{ x: isOpen ? "0%" : "-100%" }}
       animate={{ x: isOpen ? "0%" : "-100%" }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className="fixed lg:flex z-10 bg-white shadow"
