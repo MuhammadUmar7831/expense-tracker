@@ -90,3 +90,18 @@ export const signout = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getUser = async (req, res, next) => {
+  try {
+    const userId = req.userId;
+    const user = await User.findById(userId);
+    if (!user) {
+      return next(errorHandler(404, "User not found"));
+    }
+    res
+      .status(200)
+      .send({ success: true, message: `Wellcome ${user.name}`, user });
+  } catch (error) {
+    next(error);
+  }
+};

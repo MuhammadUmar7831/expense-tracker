@@ -7,6 +7,7 @@ import DashBoard from "./pages/DashBoard";
 import Error from "./interface/ErrorToaster";
 import Success from "./interface/SuccessToaster";
 import Loading from "./interface/Loading";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -19,7 +20,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/dashboard/*" element={<DashBoard />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/dashboard/*" element={<DashBoard />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </>

@@ -23,7 +23,6 @@ export const signin = async (userData) => {
     );
     return response.data;
   } catch (error) {
-    console.log(error);
     return error.response.data;
   }
 };
@@ -48,6 +47,17 @@ export const googleOAuth = async (userData) => {
     );
     return response.data;
   } catch (error) {
-    throw error.response.data;
+    return error.response.data;
+  }
+};
+
+export const getUser = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/api/auth/get/user`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    return error.response.data;
   }
 };
