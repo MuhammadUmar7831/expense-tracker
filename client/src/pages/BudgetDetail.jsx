@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrashAlt, faSave, faTimes } from "@fortawesome/free-solid-svg-icons";
 import BudgetCard from "../components/Budget/BudgetCard";
@@ -9,6 +9,7 @@ import "../styles/budgetDetail.css";
 const BudgetDetail = () => {
   const { budgetId } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const passedBudget = location.state?.budget;
 
   // State for budget and expenses
@@ -19,6 +20,9 @@ const BudgetDetail = () => {
   const [editExpenseId, setEditExpenseId] = useState(null);
   const [editExpenseName, setEditExpenseName] = useState("");
   const [editExpenseAmount, setEditExpenseAmount] = useState("");
+  const [isEditingBudget, setIsEditingBudget] = useState(false);
+  const [editBudgetName, setEditBudgetName] = useState(budget ? budget.name : "");
+  const [editBudgetAmount, setEditBudgetAmount] = useState(budget ? budget.amount : "");
 
   useEffect(() => {
     if (!budget) {
@@ -30,6 +34,8 @@ const BudgetDetail = () => {
   // Function to handle creation of budget from BudgetDialog
   const handleSaveBudget = (newBudget) => {
     setBudget(newBudget); // Set the new budget data
+    setEditBudgetName(newBudget.name);
+    setEditBudgetAmount(newBudget.amount);
   };
 
   // Function to open BudgetDialog
@@ -89,12 +95,33 @@ const BudgetDetail = () => {
 
   // Function to edit budget
   const handleEditBudget = () => {
-    // Implement edit budget logic if needed
+    setIsEditingBudget(true);
+  };
+
+  // Function to save edited budget
+  const saveEditedBudget = () => {
+    const updatedBudget = {
+      ...budget,
+      name: editBudgetName,
+      amount: parseFloat(editBudgetAmount),
+    };
+
+    setBudget(updatedBudget);
+    setIsEditingBudget(false);
+  };
+
+  // Function to cancel editing budget
+  const cancelEditBudget = () => {
+    setIsEditingBudget(false);
+    setEditBudgetName(budget.name);
+    setEditBudgetAmount(budget.amount);
   };
 
   // Function to delete budget
   const handleDeleteBudget = () => {
     // Implement delete budget logic if needed
+    // For example, redirect to the previous page after deleting the budget
+    navigate("/");
   };
 
   // Function to handle form submission for adding expense
@@ -133,8 +160,46 @@ const BudgetDetail = () => {
         <div className="bg-white rounded-lg shadow-md p-4">
           <h3 className="text-lg font-semibold mb-2">Budget Details</h3>
           <div className="mb-4">
-            {/* Pass budget data to BudgetCard */}
-            {budget && <BudgetCard budget={budget} />}
+            {budget && !isEditingBudget && (
+              <BudgetCard budget={budget} />
+            )}
+            {budget && isEditingBudget && (
+              <div className="border p-5 rounded-lg">
+                <h2 className="font-bold text-lg">Edit Budget</h2>
+                <div className="mt-2">
+                  <h2 className="text-black font-medium my-1">Budget Name</h2>
+                  <input
+                    type="text"
+                    value={editBudgetName}
+                    onChange={(e) => setEditBudgetName(e.target.value)}
+                    className="border w-full px-3 py-2 rounded-lg"
+                  />
+                </div>
+                <div className="mt-2">
+                  <h2 className="text-black font-medium my-1">Budget Amount</h2>
+                  <input
+                    type="number"
+                    value={editBudgetAmount}
+                    onChange={(e) => setEditBudgetAmount(e.target.value)}
+                    className="border w-full px-3 py-2 rounded-lg"
+                  />
+                </div>
+                <div className="flex justify-end mt-4">
+                  <button
+                    onClick={saveEditedBudget}
+                    className="bg-green-500 text-white px-4 py-2 rounded-lg mr-2 hover:bg-green-600"
+                  >
+                    <FontAwesomeIcon icon={faSave} className="mr-2" /> Save
+                  </button>
+                  <button
+                    onClick={cancelEditBudget}
+                    className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+                  >
+                    <FontAwesomeIcon icon={faTimes} className="mr-2" /> Cancel
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
