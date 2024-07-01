@@ -21,15 +21,25 @@ export const getExpense = async (req, res, next) => {
 export const getExpensesByBudget = async (req, res, next) => {
   try {
     const { budgetId } = req.params;
-    // handle the case if the budgetId is not the budget of logged in (authenticated) user
-    // const userId = req.userId //contain the userId of the logged in (authenticated) user
+    const userId = req.userId;
+
+    if(!mongoose.Types.ObjectId.isValid(budgetId))
+      {
+        return next(errorHandler(404,"Invalid Id"));
+      }
+
+      const budgetData = await Budget.findById(budgetId);
+      if(!budgetData)
+        {
+          return next(errorHandler(400,"Budget not found"));
+        }
+
+        if(budgetData.user.toString() != userId)
+          {
+            return next(errorHandler(404,"This budget does not belong to you."))
+          }
+
     const expenses = await Expense.find({ budget: budgetId });
-
-    // no need for this error reponse for UI purpose
-    // if (!expenses || expenses.length === 0) {
-    //   return next(errorHandler(404, "No expenses found for this budget"));
-    // }
-
     res
       .status(200)
       .send({ success: true, message: "Expenses Retrieved", expenses });
