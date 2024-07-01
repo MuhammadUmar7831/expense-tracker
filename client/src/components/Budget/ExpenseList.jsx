@@ -1,4 +1,3 @@
-// ExpenseList.jsx
 import React, { useState } from "react";
 
 const ExpenseList = ({ expenses, editExpense, deleteExpense }) => {
