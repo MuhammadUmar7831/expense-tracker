@@ -17,7 +17,9 @@ export default function PrivateRoute() {
       }
       setUserFetched(true);
     };
-    fetchData();
+    if (user == false) {
+      fetchData();
+    }
   }, []);
 
   const { user } = useSelector((state) => state.user);
