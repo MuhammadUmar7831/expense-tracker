@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import "../styles/Signup.css";
 import { Link } from "react-router-dom";
 import GoogleIcon from "../interface/Svgs/GoogleIcon";
 import LogoIcon from "../interface/Svgs/LogoIcon";
-import EYEicon from "../interface/Svgs/EYEicon";
-import Eyeoff from "../interface/Svgs/Eyeoff";
+import EyeOnIcon from "../interface/Svgs/EyeOnIcon";
+import EyeOffIcon from "../interface/Svgs/EyeOffIcon";
+import "../styles/signup.css";
 
 export default function SignUp() {
   const [pass, setPass] = useState(false);
@@ -44,7 +44,7 @@ export default function SignUp() {
               onClick={() => setPass(!pass)}
               className="absolute right-2 top-2"
             >
-              {pass ? <Eyeoff /> : <EYEicon />}
+              {pass ? <EyeOffIcon /> : <EyeOnIcon />}
             </button>
           </div>
           <button
@@ -55,7 +55,7 @@ export default function SignUp() {
           </button>
         </form>
         <div className="bottom-text">
-          No account? <Link to="sign-up">Sign up</Link>
+          No account? <Link to="/sign-in">Sign up</Link>
         </div>
       </div>
     </div>
