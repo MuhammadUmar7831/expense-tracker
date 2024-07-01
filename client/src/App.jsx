@@ -8,6 +8,7 @@ import Error from "./interface/ErrorToaster";
 import Success from "./interface/SuccessToaster";
 import Loading from "./interface/Loading";
 import PrivateRoute from "./components/PrivateRoute";
+import BudgetDetail from "./pages/BudgetDetail";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/sign-up" element={<SignUp />} />
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard/*" element={<DashBoard />} />
+            <Route path="/BudgetDetail" element={<BudgetDetail />} />
           </Route>
         </Routes>
       </BrowserRouter>

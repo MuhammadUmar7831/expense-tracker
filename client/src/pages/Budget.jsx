@@ -25,10 +25,9 @@ const Budget = () => {
         <div className="main-content">
           <h2>My Budgets</h2>
           <div className="budgets-grid">
-            <BudgetCard openDialog={openDialog} />{" "}
-            {/* Render the "Create New Budget" card */}
+            <BudgetCard openDialog={openDialog} /> {/* Render the "Create New Budget" card */}
             {budgets.map((budget, index) => (
-              <BudgetCard key={index} budget={budget} />
+              <BudgetCard key={index} budget={budget} openDialog={openDialog} />
             ))}
           </div>
         </div>
