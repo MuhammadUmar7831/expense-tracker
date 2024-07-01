@@ -1,12 +1,11 @@
-import React , { useState }  from "react";
+import React, { useState } from "react";
 import "../styles/expense.css";
 import EditIcon from "../interface/Svgs/EditIcon";
+import EditExpenseModal from "../components/Expense/EditExpenseModal";
 
 const Expense = () => {
-
   const [showPopup, setShowPopup] = useState(false);
   const [selectedExpense, setSelectedExpense] = useState(null);
-
 
   const handleSubmit = () => {
     // Function prototype for submitting changes
@@ -223,22 +222,11 @@ const Expense = () => {
         </tbody>
       </table>
       {showPopup && (
-        <div className="popup">
-          <div className="popup-content">
-            <span className="close" onClick={closePopup}>
-              &times;
-            </span>
-            <h2>Edit Expense</h2>
-            <p>
-              Name <input type="text" defaultValue={selectedExpense.name} />
-            </p>
-            <p>
-              Amount <input type="number" defaultValue={selectedExpense.amount} />
-            </p>
-            <button onClick={handleSubmit}>Submit</button>
-          </div>
-         
-        </div>
+        <EditExpenseModal
+          closePopup={closePopup}
+          selectedExpense={selectedExpense}
+          handleSubmit={handleSubmit}
+        />
       )}
     </div>
   );
