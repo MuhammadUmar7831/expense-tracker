@@ -4,7 +4,7 @@ import GoogleIcon from "../interface/Svgs/GoogleIcon";
 import LogoIcon from "../interface/Svgs/LogoIcon";
 import EyeOnIcon from "../interface/Svgs/EyeOnIcon";
 import EyeOffIcon from "../interface/Svgs/EyeOffIcon";
-import "../styles/signup.css";
+import "../styles/signin.css";
 
 export default function SignUp() {
   const [pass, setPass] = useState(false);
