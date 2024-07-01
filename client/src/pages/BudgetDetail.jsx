@@ -1,32 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import BudgetCard from "../components/Budget/BudgetCard";
+import BudgetDialog from "../components/Budget/BudgetDialog";
 import "../styles/budgetDetail.css";
 
 const BudgetDetail = () => {
   const { budgetId } = useParams();
 
-  // Sample budget data for the specific budget
-  const [budget, setBudget] = useState({
-    id: budgetId,
-    name: "Sample Budget",
-    amount: 2000,
-    spent: 1500,
-  });
-
+  // State for budget and expenses
+  const [budget, setBudget] = useState(null); // Initialize with null, will be set when creating new budget
   const [expenses, setExpenses] = useState([]);
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
 
+  // Function to handle creation of budget from BudgetDialog
+  const handleSaveBudget = (newBudget) => {
+    setBudget(newBudget); // Set the new budget data
+  };
+
+  // Function to open BudgetDialog
+  const openDialog = () => {
+    // Open dialog logic here if needed
+    // For example, you can manage a state to control the dialog visibility
+  };
+
+  // Function to add expense
   const addExpense = () => {
     if (name && amount) {
       const newExpense = {
         id: expenses.length + 1,
         name: name,
         amount: parseFloat(amount),
-        date: new Date().toLocaleDateString(), // Add current date
+        date: new Date().toLocaleDateString(),
       };
       setExpenses([...expenses, newExpense]);
       setName("");
@@ -34,6 +41,7 @@ const BudgetDetail = () => {
     }
   };
 
+  // Function to edit expense
   const editExpense = (editedExpense) => {
     setExpenses(
       expenses.map((expense) =>
@@ -42,37 +50,22 @@ const BudgetDetail = () => {
     );
   };
 
+  // Function to delete expense
   const deleteExpense = (expenseId) => {
     setExpenses(expenses.filter((expense) => expense.id !== expenseId));
   };
 
+  // Function to edit budget
   const handleEditBudget = () => {
-    // Implement logic to edit the budget details
-    // For demonstration, opening a prompt to enter new budget details
-    const newBudgetName = prompt("Enter new budget name", budget.name);
-    const newBudgetAmount = parseFloat(prompt("Enter new budget amount", budget.amount));
-
-    if (newBudgetName && !isNaN(newBudgetAmount)) {
-      const editedBudget = {
-        ...budget,
-        name: newBudgetName,
-        amount: newBudgetAmount,
-      };
-      setBudget(editedBudget);
-      console.log("Budget edited successfully:", editedBudget);
-    } else {
-      // Handle invalid input or cancel action
-      console.log("Edit cancelled or invalid input");
-    }
+    // Implement edit budget logic if needed
   };
 
+  // Function to delete budget
   const handleDeleteBudget = () => {
-    // Implement logic to delete the budget
-    console.log("Budget deleted successfully:", budget);
-    setBudget(null); // For example, set budget to null or an empty object
-    setExpenses([]); // Clear expenses array when deleting budget
+    // Implement delete budget logic if needed
   };
 
+  // Function to handle form submission for adding expense
   const handleSubmit = (event) => {
     event.preventDefault();
     addExpense();
@@ -80,19 +73,27 @@ const BudgetDetail = () => {
 
   return (
     <div className="p-10">
+      {/* Render BudgetDialog if budget is not set */}
+      {!budget && <BudgetDialog onClose={openDialog} onSaveBudget={handleSaveBudget} />}
+
       <div className="flex justify-end mb-4">
-        <button
-          onClick={handleEditBudget}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg mr-4 hover:bg-blue-600"
-        >
-          <FontAwesomeIcon icon={faEdit} className="mr-2" /> Edit Budget
-        </button>
-        <button
-          onClick={handleDeleteBudget}
-          className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
-        >
-          <FontAwesomeIcon icon={faTrashAlt} className="mr-2" /> Delete Budget
-        </button>
+        {/* Conditionally render Edit and Delete buttons */}
+        {budget && (
+          <>
+            <button
+              onClick={handleEditBudget}
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg mr-4 hover:bg-blue-600"
+            >
+              <FontAwesomeIcon icon={faEdit} className="mr-2" /> Edit Budget
+            </button>
+            <button
+              onClick={handleDeleteBudget}
+              className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+            >
+              <FontAwesomeIcon icon={faTrashAlt} className="mr-2" /> Delete Budget
+            </button>
+          </>
+        )}
       </div>
 
       <h2 className="text-2xl font-bold">My Expenses</h2>
@@ -100,7 +101,8 @@ const BudgetDetail = () => {
         <div className="bg-white rounded-lg shadow-md p-4">
           <h3 className="text-lg font-semibold mb-2">Budget Details</h3>
           <div className="mb-4">
-            <BudgetCard budget={budget} />
+            {/* Pass budget data to BudgetCard */}
+            {budget && <BudgetCard budget={budget} />}
           </div>
         </div>
 
