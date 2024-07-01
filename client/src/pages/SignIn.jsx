@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/SignIn.css";
 import { Link } from "react-router-dom";
 import GoogleIcon from "../interface/Svgs/GoogleIcon";
 import LogoIcon from "../interface/Svgs/LogoIcon";
 
 export default function SignIn() {
+  const [pass, setPass] = useState(false);
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center App">
       <div className="container max-w-md">
@@ -25,10 +26,11 @@ export default function SignIn() {
           />
           <input
             className="w-full focus:outline-none border py-2 px-4 rounded-md"
-            type="password"
+            type={pass ? "text" : "password"}
             required
             placeholder="Password"
           />
+          <button type="button" onClick={()=>setPass(!pass)}>Icon</button>
           <button
             className="bg-gray-900 hover:bg-gray-800 rounded-md text-white py-2 px-4 mt-2 w-full text-sm"
             type="submit"
