@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/SignIn.css";
+import "../styles/signin.css";
 import { Link } from "react-router-dom";
 import GoogleIcon from "../interface/Svgs/GoogleIcon";
 import LogoIcon from "../interface/Svgs/LogoIcon";
