@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "react-dom": "^18.3.1",
+    "react-model": "^4.3.1"
+  }
+}

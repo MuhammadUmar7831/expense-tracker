@@ -1,7 +1,18 @@
-import React from "react";
+import React , { useState }  from "react";
 import "../styles/expense.css";
+import EditIcon from "../interface/Svgs/EditIcon";
 
 const Expense = () => {
+
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedExpense, setSelectedExpense] = useState(null);
+
+
+  const handleSubmit = () => {
+    // Function prototype for submitting changes
+    closePopup();
+  };
+
   const expenses = [
     {
       _id: "667c2aab83f80556039adeb1",
@@ -165,6 +176,17 @@ const Expense = () => {
       budget: "667c291183f80556039adeae",
     },
   ];
+
+  const openPopup = (expense) => {
+    setSelectedExpense(expense);
+    setShowPopup(true);
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
+    setSelectedExpense(null);
+  };
+
   const formatDate = (dateStr) => {
     const options = { month: "long", year: "numeric", day: "numeric" };
     const date = new Date(dateStr);
@@ -182,6 +204,7 @@ const Expense = () => {
             <th>Name</th>
             <th>Amount</th>
             <th>Date</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -190,10 +213,33 @@ const Expense = () => {
               <td>{row.name}</td>
               <td>{row.amount}</td>
               <td>{formatDate(row.date)}</td>
+              <td className="editicon">
+                <button onClick={() => openPopup(row)}>
+                  <EditIcon />
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+      {showPopup && (
+        <div className="popup">
+          <div className="popup-content">
+            <span className="close" onClick={closePopup}>
+              &times;
+            </span>
+            <h2>Edit Expense</h2>
+            <p>
+              Name <input type="text" defaultValue={selectedExpense.name} />
+            </p>
+            <p>
+              Amount <input type="number" defaultValue={selectedExpense.amount} />
+            </p>
+            <button onClick={handleSubmit}>Submit</button>
+          </div>
+         
+        </div>
+      )}
     </div>
   );
 };
