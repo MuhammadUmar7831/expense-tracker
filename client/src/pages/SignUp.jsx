@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import GoogleIcon from "../interface/Svgs/GoogleIcon";
 import LogoIcon from "../interface/Svgs/LogoIcon";
@@ -9,16 +9,20 @@ import useSignUp from "../hooks/useSignUp";
 
 export default function SignUp() {
   const {
-    handleSigupClick,
+    handleSignupClick,
     name,
     setName,
     email,
     setEmail,
     password,
-    setPassword,
+    handlePasswordChange,
     showPassword,
-    setShowPassword,
+    toggleShowPassword,
+    passwordStrength,
   } = useSignUp();
+
+  const buttonStyle = passwordStrength === "strong" ? "bg-gray-900 hover:bg-gray-800" : "bg-gray-200 cursor-not-allowed";
+
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center App">
       <div className="container max-w-md">
@@ -30,10 +34,10 @@ export default function SignUp() {
           </button>
         </div>
         <p className="text-center my-2 text-md">or</p>
-        <form onSubmit={handleSigupClick} className="flex flex-col gap-2">
+        <form onSubmit={handleSignupClick} className="flex flex-col gap-2">
           <input
             className="w-full focus:outline-none border py-2 px-4 rounded-md"
-            type="name"
+            type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
@@ -52,27 +56,44 @@ export default function SignUp() {
               className="w-full focus:outline-none border py-2 px-4 rounded-md pr-10"
               type={showPassword ? "text" : "password"}
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
               required
               placeholder="Password"
             />
             <button
               type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-2 top-2"
+              onClick={toggleShowPassword}
+              className="absolute right-2 top-2 focus:outline-none"
             >
-              {!showPassword ? <EyeOffIcon /> : <EyeOnIcon />}
+              {/* {showPassword ? <EyeOffIcon /> : <EyeOnIcon />} */}
             </button>
           </div>
+          {password && (
+            <div className={`text-sm ${passwordStrength === "strong" ? "text-green-500" : passwordStrength === "moderate" ? "text-yellow-500" : "text-red-500"}`}>
+              Password strength: {passwordStrength}
+            </div>
+          )}
+          <div className="text-sm text-gray-500 mt-2">
+            A strong password should contain at least:
+            <ul className="list-disc list-inside">
+              <li>1 uppercase letter</li>
+              <li>1 lowercase letter</li>
+              <li>1 number</li>
+              <li>1 special character</li>
+              <li>Be at least 8 characters long</li>
+            </ul>
+            You will only be able to continue if you make a strong password.
+          </div>
           <button
-            className="bg-gray-900 hover:bg-gray-800 rounded-md text-white py-2 px-4 mt-2 w-full text-sm"
+            className={`${buttonStyle} rounded-md text-white py-2 px-4 mt-2 w-full text-sm`}
             type="submit"
+            disabled={passwordStrength !== "strong"}
           >
             CONTINUE
           </button>
         </form>
         <div className="bottom-text">
-          No account? <Link to="/sign-in">Sign up</Link>
+          Already have an account? <Link to="/sign-in">Sign in</Link>
         </div>
       </div>
     </div>
