@@ -8,17 +8,18 @@ import DashboardHeader from "../components/DashboardHeader";
 import BudgetDetail from "./BudgetDetail";
 
 export default function Dashboard() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  // const toggleMenu = () => {
+    // console.log('first')
+    // setIsOpen(!isOpen);
+  // };
 
   return (
     <div className="flex">
-      <Menu isOpen={isOpen} toggleMenu={toggleMenu} />
+      <Menu isOpen={isOpen} setOpen={setOpen} />
       <div className="w-full">
-        <DashboardHeader isOpen={isOpen} toggleMenu={toggleMenu} />
+        <DashboardHeader isOpen={isOpen} setOpen={setOpen} />
         <Routes>
           <Route path="/" element={<Stats />} />
           <Route path="/budget" element={<Budget />} />

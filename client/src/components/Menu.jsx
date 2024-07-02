@@ -3,13 +3,11 @@ import StatsIcon from "../interface/Svgs/StatsIcon";
 import BudgetIcon from "../interface/Svgs/BudgetIcon";
 import ExpenseIcon from "../interface/Svgs/ExpenseIcon";
 import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-export default function Menu({ isOpen, toggleMenu }) {
-  const navigate = useNavigate();
+export default function Menu({ isOpen, setOpen }) {
   return (
     <motion.div
-      // initial={{ x: "0%" }}
       initial={{ x: isOpen ? "0%" : "-100%" }}
       animate={{ x: isOpen ? "0%" : "-100%" }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -19,9 +17,7 @@ export default function Menu({ isOpen, toggleMenu }) {
         <h1 className="text-gray-600 text-2xl text-nowrap">Expense Tracker</h1>
         <div className="mt-20 text-lg flex flex-col gap-6">
           <Link
-            onClick={() => {
-              toggleMenu(false);
-            }}
+            onClick={() => setOpen(false)}
             to="/dashboard"
             className="flex gap-2 px-4 py-2 hover:bg-gray-900 cursor-pointer rounded-md hover:text-white"
           >
@@ -30,19 +26,15 @@ export default function Menu({ isOpen, toggleMenu }) {
           </Link>
           <Link
             to="/dashboard/budget"
-            onClick={() => {
-              toggleMenu(false);
-            }}
+            onClick={() => setOpen(false)}
             className="flex gap-2 px-4 py-2 hover:bg-gray-900 cursor-pointer rounded-md hover:text-white"
           >
             <BudgetIcon className="hover:text-white" />
             <span>Budgets</span>
           </Link>
           <Link
-            to="/BudgetDetail"
-            onClick={() => {
-              toggleMenu(false);
-            }}
+            to="/dashboard/expense"
+            onClick={() => setOpen(false)}
             className="flex gap-2 px-4 py-2 hover:bg-gray-900 cursor-pointer rounded-md hover:text-white"
           >
             <ExpenseIcon className="hover:text-white" />
