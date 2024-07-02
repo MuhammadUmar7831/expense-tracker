@@ -21,10 +21,13 @@ export default function SignUp() {
     passwordStrength,
   } = useSignUp();
 
-  const buttonStyle = passwordStrength === "strong" ? "bg-gray-900 hover:bg-gray-800" : "bg-gray-200 cursor-not-allowed";
+  const buttonStyle =
+    passwordStrength === "strong"
+      ? "bg-gray-900 hover:bg-gray-800"
+      : "bg-gray-200 cursor-not-allowed";
 
   return (
-    <div className="w-screen h-screen flex flex-col items-center justify-center App">
+    <div className=" flex flex-col p-2 items-center justify-center App">
       <div className="container max-w-md">
         <LogoIcon />
         <h1 className="text-center text-3xl">Sign Up</h1>
@@ -65,12 +68,20 @@ export default function SignUp() {
               onClick={toggleShowPassword}
               className="absolute right-2 top-2 focus:outline-none"
             >
-              {/* {showPassword ? <EyeOffIcon /> : <EyeOnIcon />} */}
+              {!showPassword ? <EyeOffIcon /> : <EyeOnIcon />}
             </button>
           </div>
           {password && (
-            <div className={`text-sm ${passwordStrength === "strong" ? "text-green-500" : passwordStrength === "moderate" ? "text-yellow-500" : "text-red-500"}`}>
-              Password strength: {passwordStrength}
+            <div
+              className={`text-sm uppercase ${
+                passwordStrength === "strong"
+                  ? "text-green-500"
+                  : passwordStrength === "moderate"
+                  ? "text-yellow-500"
+                  : "text-red-500"
+              }`}
+            >
+              {passwordStrength}
             </div>
           )}
           <div className="text-sm text-gray-500 mt-2">
@@ -79,7 +90,7 @@ export default function SignUp() {
               <li>1 uppercase letter</li>
               <li>1 lowercase letter</li>
               <li>1 number</li>
-              <li>1 special character</li>
+              <li>1 special characters (@$!%*?&)</li>
               <li>Be at least 8 characters long</li>
             </ul>
             You will only be able to continue if you make a strong password.
