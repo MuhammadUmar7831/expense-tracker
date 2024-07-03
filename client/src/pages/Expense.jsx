@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import ExpenseTable from "../components/Expense/ExpenseTable";
-import BeatLoader from "react-spinners/BeatLoader";
-import { loaderColor } from "../constants/loaderColor";
 import EditExpenseModal from "../components/Expense/EditExpenseModal";
 import useExpense from "../hooks/useExpense";
+import ExpenseTableSkeleton from "../interface/ExpenseTableSkeleton";
 import "../styles/expense.css";
 
 const Expense = () => {
@@ -31,9 +30,7 @@ const Expense = () => {
         <p className="text-lg mt-2">Latest Expenses</p>
       </div>
       {expenses == false ? (
-        <div className="flex justify-center w-full mt-5">
-          <BeatLoader color={loaderColor} />
-        </div>
+        <ExpenseTableSkeleton className={"flex flex-col gap-2 w-[90%]"} />
       ) : expenses.length > 0 ? (
         <ExpenseTable
           expenses={expenses}
