@@ -19,6 +19,8 @@ export default function PrivateRoute() {
     };
     if (user == false) {
       fetchData();
+    } else {
+      setUserFetched(true);
     }
   }, []);
 

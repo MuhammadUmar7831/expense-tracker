@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function EyeOffIcon() {
+export default function EyeOffIcon({ className }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,9 +10,9 @@ export default function EyeOffIcon() {
       fill="none"
       stroke="currentColor"
       stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="lucide lucide-eye-off"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={`lucide lucide-eye-off ${className}`}
     >
       <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
       <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
