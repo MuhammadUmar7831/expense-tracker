@@ -11,3 +11,19 @@ export const getUserAllExpenses = async () => {
     return error.response.data;
   }
 };
+
+export const updateUserExpensesApi = async (expenseId, data) => {
+  try {
+    const response = await axios.put(
+      `${API_BASE_URL}/api/expense/update/${expenseId}`,
+      data,
+      {
+        withCredentials: true,
+      }
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};

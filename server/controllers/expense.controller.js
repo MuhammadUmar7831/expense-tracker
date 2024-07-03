@@ -8,7 +8,9 @@ export const getExpense = async (req, res, next) => {
     const { expensesIds } = req;
     let expenses = [];
     if (expensesIds.length > 0) {
-      expenses = await Expense.find({ _id: { $in: expensesIds } });
+      expenses = await Expense.find({ _id: { $in: expensesIds } }).sort({
+        date: -1,
+      });
     }
     res
       .status(200)
@@ -23,21 +25,18 @@ export const getExpensesByBudget = async (req, res, next) => {
     const { budgetId } = req.params;
     const userId = req.userId;
 
-    if(!mongoose.Types.ObjectId.isValid(budgetId))
-      {
-        return next(errorHandler(404,"Invalid Id"));
-      }
+    if (!mongoose.Types.ObjectId.isValid(budgetId)) {
+      return next(errorHandler(404, "Invalid Id"));
+    }
 
-      const budgetData = await Budget.findById(budgetId);
-      if(!budgetData)
-        {
-          return next(errorHandler(400,"Budget not found"));
-        }
+    const budgetData = await Budget.findById(budgetId);
+    if (!budgetData) {
+      return next(errorHandler(400, "Budget not found"));
+    }
 
-        if(budgetData.user.toString() != userId)
-          {
-            return next(errorHandler(404,"This budget does not belong to you."))
-          }
+    if (budgetData.user.toString() != userId) {
+      return next(errorHandler(404, "This budget does not belong to you."));
+    }
 
     const expenses = await Expense.find({ budget: budgetId });
     res
@@ -80,7 +79,7 @@ export const addExpense = async (req, res, next) => {
 
     if (totalExpenses + amount > budgetData.amount) {
       return next(
-        errorHandler(400, "Total spendings exceed the budget amount")
+        errorHandler(400, `Total spendings exceed the budget amount`)
       );
     }
 
@@ -148,9 +147,19 @@ export const updateExpense = async (req, res, next) => {
         errorHandler(400, "This Expense does not belongs to the given budget")
       );
     }
-                                // also we have to minus the previous amount
-    if (totalExpenses + amount - expenseData.amount > budgetData.amount) {
-      return next(errorHandler(400, "Total expenses exceed the budget amount"));
+    // also we have to minus the previous amount
+    if (
+      totalExpenses + parseInt(amount) - expenseData.amount >
+      budgetData.amount
+    ) {
+      return next(
+        errorHandler(
+          400,
+          `Total expenses exceed the budget amount Limit: ${
+            budgetData.amount - totalExpenses + expenseData.amount
+          }`
+        )
+      );
     }
 
     const updatedExpense = await Expense.findByIdAndUpdate(

@@ -20,7 +20,7 @@ export default function ExpenseTable({ expenses, openPopup }) {
       </thead>
       <tbody>
         {expenses.map((row, i) => (
-          <tr>
+          <tr key={row._id}>
             <td>{row.name}</td>
             <td>{row.amount}</td>
             <td>{formatDate(row.date)}</td>

@@ -1,1 +1,1 @@
-export const loadetColor = "#111827"
+export const loaderColor = "#111827"

@@ -1,7 +1,8 @@
 import React from "react";
 
 export default function EditExpenseModal(props) {
-  const { closePopup, selectedExpense, handleSubmit } = props;
+  const { closePopup, selectedExpense, setSelectedExpense, handleSubmit } =
+    props;
 
   const handleOuterClick = (e) => {
     if (e.target.className === "popup") {
@@ -18,7 +19,20 @@ export default function EditExpenseModal(props) {
         <h2>Edit Expense</h2>
         <p>
           Name{" "}
-          <input required type="text" defaultValue={selectedExpense.name} />
+          <input
+            required
+            type="text"
+            onChange={(e) => {
+              setSelectedExpense({
+                _id: selectedExpense._id,
+                name: e.target.value,
+                amount: selectedExpense.amount,
+                budget: selectedExpense.budget,
+                change: true,
+              });
+            }}
+            defaultValue={selectedExpense.name}
+          />
         </p>
         <p>
           Amount{" "}
@@ -27,6 +41,15 @@ export default function EditExpenseModal(props) {
             type="number"
             min="0"
             defaultValue={selectedExpense.amount}
+            onChange={(e) => {
+              setSelectedExpense({
+                _id: selectedExpense._id,
+                name: selectedExpense.name,
+                amount: e.target.value,
+                budget: selectedExpense.budget,
+                change: true,
+              });
+            }}
             onKeyPress={(e) => e.charCode === 45 && e.preventDefault()}
           />
         </p>
