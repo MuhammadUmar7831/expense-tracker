@@ -1,7 +1,6 @@
 import React from "react";
 
 export default function ExpenseTable({ expenses }) {
-    
   const formatDate = (dateStr) => {
     const options = { month: "long", year: "numeric", day: "numeric" };
     const date = new Date(dateStr);
@@ -15,6 +14,7 @@ export default function ExpenseTable({ expenses }) {
           <th>Name</th>
           <th>Amount</th>
           <th>Date</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -23,6 +23,11 @@ export default function ExpenseTable({ expenses }) {
             <td>{row.name}</td>
             <td>{row.amount}</td>
             <td>{formatDate(row.date)}</td>
+            <td className="editicon">
+              <button onClick={() => openPopup(row)}>
+                <EditIcon />
+              </button>
+            </td>
           </tr>
         ))}
       </tbody>

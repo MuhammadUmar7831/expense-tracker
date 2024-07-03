@@ -6,6 +6,7 @@ import { setError } from "../redux/slices/error.slice";
 import ExpenseTable from "../components/Expense/ExpenseTable";
 import BeatLoader from "react-spinners/BeatLoader";
 import { loadetColor } from "../constants/loaderColor";
+import EditExpenseModal from "../components/Expense/EditExpenseModal";
 
 const Expense = () => {
   const [expenses, setExpenses] = useState([]);
@@ -23,6 +24,29 @@ const Expense = () => {
     fetchData();
   }, []);
 
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedExpense, setSelectedExpense] = useState(null);
+
+  const handleSubmit = () => {
+    // Function prototype for submitting changes
+    closePopup();
+  };
+
+  const openPopup = (expense) => {
+    setSelectedExpense(expense);
+    setShowPopup(true);
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
+    setSelectedExpense(null);
+  };
+
+  const formatDate = (dateStr) => {
+    const options = { month: "long", year: "numeric", day: "numeric" };
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("en-US", options);
+  };
   return (
     <div className="flex flex-col gap-5 items-center justify-center p-2">
       <div className="w-[90%] mt-10">
@@ -37,6 +61,13 @@ const Expense = () => {
         <ExpenseTable expenses={expenses} />
       ) : (
         <div className="text-2xl">😔 No Expense Found</div>
+      )}
+      {showPopup && (
+        <EditExpenseModal
+          closePopup={closePopup}
+          selectedExpense={selectedExpense}
+          handleSubmit={handleSubmit}
+        />
       )}
     </div>
   );
