@@ -11,10 +11,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "^2.2.6",
-    "axios": "^1.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@reduxjs/toolkit": "^2.2.6",
+    "axios": "^1.7.2",
+    "emoji-picker-react": "^4.11.0",
     "framer-motion": "^11.2.12",
     "hamburger-react": "^2.5.1",
     "react": "^18.3.1",

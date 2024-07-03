@@ -1,50 +1,43 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import EmojiPicker from "emoji-picker-react";
+import { Link, useNavigate } from "react-router-dom";
 
-const BudgetCard = ({ budget, openDialog }) => {
-  const navigate = useNavigate();
-
-  const handleCardClick = () => {
-    if (budget) {
-      navigate("/BudgetDetail", { state: { budget } });
-    } else {
-      openDialog();
-    }
-  };
-
-  if (!budget) {
-    return (
-      <div className="budget-card-create-new" onClick={openDialog}>
-        + <br /> Create New Budget
-      </div>
-    );
-  }
-
-  const { name, amount, spent } = budget;
-  const remaining = amount - spent;
-  const spentPercentage = (spent / amount) * 100;
-  const remainingPercentage = (remaining / amount) * 100;
+const BudgetCard = ({ budget }) => {
+  const { _id, name, amount, spending, items, emoji } = budget;
+  const remaining = amount - spending;
+  const spentPercentage = (spending / amount) * 100;
 
   return (
-    <div className="budget-card-link" onClick={handleCardClick}>
-      <div className="budget-card">
-        <div className="budget-info">
-          <div className="budget-name-items">
-            <div className="budget-name">{name}</div>
-            <div className="item-number">0 Items</div>
-          </div>
-          <div className="budget-amount">${amount}</div>
-        </div>
-        <div className="single-bar-container">
-          <div className="single-bar-labels">
-            <span>Spent: ${spent}</span>
-            <span>Remaining: ${remaining}</span>
-          </div>
-          <div className="single-bar">
-            <div className="spent" style={{ width: `${spentPercentage}%` }}></div>
-            <div className="remaining" style={{ width: `${remainingPercentage}%` }}></div>
+    <div className="flex flex-col w-full md:w-[48%] lg:w-[33%] border p-4 rounded-md mb-2">
+      <div className="flex w-full justify-between">
+        <div className="flex items-center gap-2">
+          <span className="text-2xl p-2 bg-gray-100 rounded-full">{emoji}</span>
+          <div className="flex flex-col">
+            <span className="font-semibold text-lg">{name}</span>
+            <span className="text-gray-500">
+              {items} Item{items > 1 ? "s" : ""}
+            </span>
           </div>
         </div>
+        <div className="text-gray-900 font-semibold text-2xl">${amount}</div>
+      </div>
+      <div className="text-gray-500 text-sm flex justify-between mt-5">
+        <span>${spending} spent</span>
+        <span>${remaining} remaining</span>
+      </div>
+      <div className="w-full h-2 bg-gray-200 rounded-md mt-2">
+        <div
+          className="bg-gray-900 h-2 rounded-md"
+          style={{ width: `${spentPercentage}%` }}
+        ></div>
+      </div>
+      <div className="w-full mt-5 flex justify-end">
+        <Link
+          to={`/budget/detail/${_id}`}
+          className="rounded text-gray-900 hover:underline"
+        >
+          view details
+        </Link>
       </div>
     </div>
   );

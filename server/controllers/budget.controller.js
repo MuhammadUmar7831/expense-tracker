@@ -6,8 +6,33 @@ import Expense from "../models/Expense.Model.js";
 export const getBudget = async (req, res, next) => {
   try {
     const userId = req.userId;
-    const budgets = await Budget.find({ user: userId });
-    res.status(200).send({ success: true, message: "Budgets sent", budgets });
+    const budgets = await Budget.find({ user: userId }).lean();
+
+    const budgetsWithDetails = await Promise.all(
+      budgets.map(async (budget) => {
+        const result = await Expense.aggregate([
+          { $match: { budget: budget._id } },
+          {
+            $group: {
+              _id: null,
+              totalSpending: { $sum: "$amount" },
+              itemCount: { $sum: 1 },
+            },
+          },
+        ]);
+        return {
+          ...budget,
+          spending: result.length > 0 ? result[0].totalSpending : 0,
+          items: result.length > 0 ? result[0].itemCount : 0,
+        };
+      })
+    );
+
+    res.status(200).send({
+      success: true,
+      message: "Budgets sent",
+      budgets: budgetsWithDetails,
+    });
   } catch (error) {
     next(error);
   }
@@ -97,7 +122,7 @@ export const deleteBudget = async (req, res, next) => {
     await Expense.deleteMany({ budget: budgetId });
     res.status(200).send({
       sucess: true,
-      message: "Budget deleted"
+      message: "Budget deleted",
     });
   } catch (error) {
     next(error);
