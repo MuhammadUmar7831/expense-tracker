@@ -11,20 +11,27 @@ export default function EditExpenseModal(props) {
 
   return (
     <div className="popup" onClick={handleOuterClick}>
-      <div className="popup-content">
+      <form onSubmit={handleSubmit} className="popup-content">
         <span className="close" onClick={closePopup}>
           &times;
         </span>
         <h2>Edit Expense</h2>
         <p>
-          Name <input type="text" defaultValue={selectedExpense.name} />
+          Name{" "}
+          <input required type="text" defaultValue={selectedExpense.name} />
         </p>
         <p>
-          Amount <input type="number" min="0" defaultValue={selectedExpense.amount} onKeyPress={(e) => e.charCode === 45 && e.preventDefault()}/>
+          Amount{" "}
+          <input
+            required
+            type="number"
+            min="0"
+            defaultValue={selectedExpense.amount}
+            onKeyPress={(e) => e.charCode === 45 && e.preventDefault()}
+          />
         </p>
-        <button onClick={handleSubmit}>Update Expense</button>
-      </div>
-      
+        <button type="submit">Update Expense</button>
+      </form>
     </div>
   );
 }

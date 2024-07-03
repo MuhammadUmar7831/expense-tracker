@@ -27,7 +27,8 @@ const Expense = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedExpense, setSelectedExpense] = useState(null);
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     // Function prototype for submitting changes
     closePopup();
   };
@@ -42,11 +43,6 @@ const Expense = () => {
     setSelectedExpense(null);
   };
 
-  const formatDate = (dateStr) => {
-    const options = { month: "long", year: "numeric", day: "numeric" };
-    const date = new Date(dateStr);
-    return date.toLocaleDateString("en-US", options);
-  };
   return (
     <div className="flex flex-col gap-5 items-center justify-center p-2">
       <div className="w-[90%] mt-10">
@@ -58,7 +54,7 @@ const Expense = () => {
           <BeatLoader color={loadetColor} />
         </div>
       ) : expenses.length > 0 ? (
-        <ExpenseTable expenses={expenses} />
+        <ExpenseTable expenses={expenses} openPopup={openPopup} />
       ) : (
         <div className="text-2xl">😔 No Expense Found</div>
       )}

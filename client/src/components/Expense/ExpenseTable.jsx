@@ -1,6 +1,7 @@
 import React from "react";
+import EditIcon from "../../interface/Svgs/EditIcon";
 
-export default function ExpenseTable({ expenses }) {
+export default function ExpenseTable({ expenses, openPopup }) {
   const formatDate = (dateStr) => {
     const options = { month: "long", year: "numeric", day: "numeric" };
     const date = new Date(dateStr);
