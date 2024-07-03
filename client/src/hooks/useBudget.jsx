@@ -1,33 +1,32 @@
-import { useState } from 'react';
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { getUserAllBudgetsApi } from "../api/budget.api";
+import { setError } from "../redux/slices/error.slice";
 
-const useBudget = () => {
+export default function useBudget() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [budgets, setBudgets] = useState([]);
+  const disptach = useDispatch();
 
-  // Function to add a new budget
-  const addBudget = (newBudget) => {
-    setBudgets([...budgets, newBudget]);
+  const getAllBudgets = async () => {
+    const res = await getUserAllBudgetsApi();
+    if (!res.success) {
+      disptach(setError(res.message));
+    } else {
+      setBudgets(res.budgets);
+    }
   };
 
-  // Function to delete a budget by id
-  const deleteBudget = (budgetId) => {
-    const updatedBudgets = budgets.filter(budget => budget.id !== budgetId);
-    setBudgets(updatedBudgets);
-  };
-
-  // Function to update a budget
-  const updateBudget = (updatedBudget) => {
-    const updatedBudgets = budgets.map(budget =>
-      budget.id === updatedBudget.id ? updatedBudget : budget
-    );
-    setBudgets(updatedBudgets);
+  const closeDialog = () => {
+    setIsDialogOpen(false);
   };
 
   return {
     budgets,
-    addBudget,
-    deleteBudget,
-    updateBudget
+    setIsDialogOpen,
+    isDialogOpen,
+    setBudgets,
+    closeDialog,
+    getAllBudgets,
   };
-};
-
-export default useBudget;
+}
