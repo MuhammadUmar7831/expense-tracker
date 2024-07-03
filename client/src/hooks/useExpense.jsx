@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { getUserAllExpenses, updateUserExpensesApi } from "../api/expense.api";
+import {
+  deleteUserExpensesApi,
+  getUserAllExpenses,
+  updateUserExpensesApi,
+} from "../api/expense.api";
 import { setError } from "../redux/slices/error.slice";
 import { setSuccess } from "../redux/slices/success.slice";
 import { setLoading } from "../redux/slices/loading.slice";
@@ -60,14 +64,16 @@ export default function useExpense() {
     setShowPopup(false);
     setSelectedExpense(null);
   };
+
   return {
     expenses,
+    setExpenses,
     showPopup,
     openPopup,
     closePopup,
     selectedExpense,
     setSelectedExpense,
     handleSubmit,
-    fetchData
+    fetchData,
   };
 }

@@ -9,6 +9,7 @@ import "../styles/expense.css";
 const Expense = () => {
   const {
     expenses,
+    setExpenses,
     showPopup,
     openPopup,
     closePopup,
@@ -16,6 +17,7 @@ const Expense = () => {
     setSelectedExpense,
     handleSubmit,
     fetchData,
+    deleteExpense,
   } = useExpense();
 
   useEffect(() => {
@@ -33,7 +35,11 @@ const Expense = () => {
           <BeatLoader color={loaderColor} />
         </div>
       ) : expenses.length > 0 ? (
-        <ExpenseTable expenses={expenses} openPopup={openPopup} />
+        <ExpenseTable
+          expenses={expenses}
+          openPopup={openPopup}
+          setExpenses={setExpenses}
+        />
       ) : (
         <div className="text-2xl">😔 No Expense Found</div>
       )}

@@ -21,7 +21,20 @@ export const updateUserExpensesApi = async (expenseId, data) => {
         withCredentials: true,
       }
     );
-    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+export const deleteUserExpensesApi = async (expenseId) => {
+  try {
+    const response = await axios.delete(
+      `${API_BASE_URL}/api/expense/delete/${expenseId}`,
+      {
+        withCredentials: true,
+      }
+    );
     return response.data;
   } catch (error) {
     return error.response.data;
