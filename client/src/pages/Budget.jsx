@@ -5,10 +5,18 @@ import BeatLoader from "react-spinners/BeatLoader";
 import { loaderColor } from "../constants/loaderColor";
 import useBudget from "../hooks/useBudget";
 import "../styles/budget.css";
+import Skeleton from "../interface/Skeleton";
+import BudgetCardSkeleton from "../interface/BudgetCardSkeleton";
 
 const Budget = () => {
-  const { budgets, setIsDialogOpen, isDialogOpen, setBudgets, closeDialog, getAllBudgets } =
-    useBudget();
+  const {
+    budgets,
+    setIsDialogOpen,
+    isDialogOpen,
+    setBudgets,
+    closeDialog,
+    getAllBudgets,
+  } = useBudget();
 
   useEffect(() => {
     getAllBudgets();
@@ -18,24 +26,32 @@ const Budget = () => {
     <>
       <div className="px-4 mt-10">
         <h1 className="text-3xl font-semibold">My Budgets</h1>
-        {budgets == false ? (
-          <div className="flex justify-center w-full mt-5">
-            <BeatLoader color={loaderColor} />
+
+        <div className="flex gap-[6px] flex-wrap w-full mt-5">
+          <div
+            onClick={() => setIsDialogOpen(true)}
+            className="flex flex-col justify-center items-center w-full md:w-[48%] lg:w-[33%] hover:bg-gray-100 border border-dashed p-4 rounded-md mb-2 text-xl font-semibold cursor-pointer"
+          >
+            <span>+</span>
+            <span>Create New Budget</span>
           </div>
-        ) : (
-          <div className="flex gap-[6px] flex-wrap w-full mt-5">
-            <div
-              onClick={() => setIsDialogOpen(true)}
-              className="flex flex-col justify-center items-center w-full md:w-[48%] lg:w-[33%] hover:bg-gray-100 border border-dashed p-4 rounded-md mb-2 text-xl font-semibold cursor-pointer"
-            >
-              <span>+</span>
-              <span>Create New Budget</span>
-            </div>
-            {budgets.map((budget, index) => (
-              <BudgetCard key={index} budget={budget} />
-            ))}
-          </div>
-        )}
+          {budgets == false ? (
+            <>
+              <BudgetCardSkeleton
+                className={"h-32 w-full md:w-[48%] lg:w-[33%] p-4"}
+              />
+              <BudgetCardSkeleton
+                className={"h-32 w-full md:w-[48%] lg:w-[33%] p-4"}
+              />
+            </>
+          ) : (
+            <>
+              {budgets.map((budget, index) => (
+                <BudgetCard key={index} budget={budget} />
+              ))}
+            </>
+          )}
+        </div>
       </div>
 
       {isDialogOpen && (
