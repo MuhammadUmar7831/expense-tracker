@@ -15,12 +15,15 @@ import { addExpenseApi, getExpensesByBudgetApi } from "../api/expense.api";
 import ExpenseTableSkeleton from "../interface/ExpenseTableSkeleton";
 import ExpenseTable from "../components/Expense/ExpenseTable";
 import "../styles/budgetDetail.css";
+import BudgetCardSkeleton from "../interface/BudgetCardSkeleton";
+import Skeleton from "../interface/Skeleton";
+import AddExpenseModalSkeleton from "../interface/AddExpenseModalSkeleton";
 
 const BudgetDetail = () => {
   const { budgetId } = useParams();
   const navigate = useNavigate();
 
-  const [budget, setBudget] = useState(null);
+  const [budget, setBudget] = useState(false);
   const [expenses, setExpenses] = useState(false);
   const [isEditingBudget, setIsEditingBudget] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState();
@@ -81,40 +84,53 @@ const BudgetDetail = () => {
       <h2 className="text-2xl font-bold">Budget Details</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 mt-6 gap-6">
         <div className="flex flex-col">
-          {budget && (
-            <BudgetCard
-              budget={budget}
-              link={false}
-              className={"w-full md:w-full lg:w-full h-fit"}
-            />
+          {budget === false ? (
+            <>
+              <BudgetCardSkeleton
+                className={"w-full md:w-full lg:w-full h-fit"}
+              />
+
+              <div className="flex justify-end gap-2 mt-2">
+                <Skeleton className={"rounded-md h-10 w-24"} />
+                <Skeleton className={"rounded-md h-10 w-24"} />
+              </div>
+            </>
+          ) : (
+            <>
+              <BudgetCard
+                budget={budget}
+                link={false}
+                className={"w-full md:w-full lg:w-full h-fit"}
+              />
+              <div className="flex justify-end mb-4">
+                <button
+                  onClick={() => setIsEditingBudget(true)}
+                  className="bg-gray-900 text-white px-4 py-2 rounded-lg mr-4 hover:bg-gray-800"
+                >
+                  <FontAwesomeIcon icon={faEdit} className="mr-2" /> Edit
+                </button>
+                <button
+                  onClick={() => setDeleteModalOpen(true)}
+                  className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800"
+                >
+                  <FontAwesomeIcon icon={faTrashAlt} className="mr-2" /> Delete
+                </button>
+              </div>
+            </>
           )}
-          <div className="flex justify-end mb-4">
-            <button
-              onClick={() => setIsEditingBudget(true)}
-              className="bg-gray-900 text-white px-4 py-2 rounded-lg mr-4 hover:bg-gray-800"
-            >
-              <FontAwesomeIcon icon={faEdit} className="mr-2" /> Edit
-            </button>
-            <button
-              onClick={() => setDeleteModalOpen(true)}
-              className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800"
-            >
-              <FontAwesomeIcon icon={faTrashAlt} className="mr-2" /> Delete
-            </button>
-          </div>
         </div>
 
-        {budget !== null ? (
+        {budget === false ? (
+          <AddExpenseModalSkeleton className={"w-full flex flex-col gap-2"} />
+        ) : (
           <AddExpenseModal
             remaining={budget.amount - budget.spending}
             handleSubmit={addExpense}
           />
-        ) : (
-          <></>
         )}
       </div>
 
-      {budget !== null && isEditingBudget ? (
+      {budget !== false && isEditingBudget ? (
         <EditBudgetModal
           budget={budget}
           onClose={() => setIsEditingBudget(false)}
