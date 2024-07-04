@@ -10,11 +10,6 @@ import BudgetDetail from "./BudgetDetail";
 export default function Dashboard() {
   const [isOpen, setOpen] = useState(false);
 
-  // const toggleMenu = () => {
-    // console.log('first')
-    // setIsOpen(!isOpen);
-  // };
-
   return (
     <div className="flex">
       <Menu isOpen={isOpen} setOpen={setOpen} />
@@ -23,9 +18,7 @@ export default function Dashboard() {
         <Routes>
           <Route path="/" element={<Stats />} />
           <Route path="/budget" element={<Budget />} />
-          {/* <Route path="/budget/detail/:budgetId" element={<BudgetDetail />} /> */}
-          <Route path="/BudgetDetail" element={<BudgetDetail />} />
-
+          <Route path="/budget/detail/:budgetId" element={<BudgetDetail />} />
           <Route path="/expense" element={<Expense />} />
         </Routes>
       </div>

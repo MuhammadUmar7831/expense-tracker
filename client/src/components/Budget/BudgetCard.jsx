@@ -33,7 +33,7 @@ const BudgetCard = ({ budget }) => {
       </div>
       <div className="w-full mt-5 flex justify-end">
         <Link
-          to={`/budget/detail/${_id}`}
+          to={`/dashboard/budget/detail/${_id}`}
           className="rounded text-gray-900 hover:underline"
         >
           view details

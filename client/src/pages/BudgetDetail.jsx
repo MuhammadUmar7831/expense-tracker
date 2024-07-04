@@ -133,7 +133,7 @@ const BudgetDetail = () => {
   return (
     <div className="p-10">
       {/* Render BudgetDialog if budget is not set */}
-      {!budget && <BudgetDialog onClose={openDialog} onSaveBudget={handleSaveBudget} />}
+      {/* {!budget && <BudgetDialog onClose={openDialog} onSaveBudget={handleSaveBudget} />} */}
 
       <div className="flex justify-end mb-4">
         {/* Conditionally render Edit and Delete buttons */}
@@ -155,7 +155,7 @@ const BudgetDetail = () => {
         )}
       </div>
 
-      <h2 className="text-2xl font-bold">My Expenses</h2>
+      <h2 className="text-2xl font-bold">Budget Details</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 mt-6 gap-6">
         <div className="bg-white rounded-lg shadow-md p-4">
           <h3 className="text-lg font-semibold mb-2">Budget Details</h3>

@@ -38,6 +38,42 @@ export const getBudget = async (req, res, next) => {
   }
 };
 
+export const getBudgetByBudgetId = async (req, res, next) => {
+  try {
+    const { budgetId } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(budgetId)) {
+      return next(errorHandler(400, "Invalid Budget"));
+    }
+    let budget = await Budget.findById(budgetId);
+    if (!budget) {
+      return next(errorHandler(400, "Budget not Found"));
+    }
+    if (budget.user.toString() !== req.userId) {
+      return next(errorHandler(401, "Forbidden! You are not allowed"));
+    }
+    const result = await Expense.aggregate([
+      { $match: { budget: budget._id } },
+      {
+        $group: {
+          _id: null,
+          totalSpending: { $sum: "$amount" },
+          itemCount: { $sum: 1 },
+        },
+      },
+    ]);
+    const { totalSpending = 0, itemCount = 0 } =
+      result.length > 0 ? result[0] : {};
+
+    budget = budget.toObject();
+    budget.spending = totalSpending;
+    budget.items = itemCount;
+    console.log(budget);
+    res.status(200).send({ success: true, message: "Budget Sent", budget });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const addBudget = async (req, res, next) => {
   try {
     const { name, amount, emoji } = req.body;
