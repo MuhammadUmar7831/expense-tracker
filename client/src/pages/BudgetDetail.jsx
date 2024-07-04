@@ -12,6 +12,9 @@ import DeleteModal from "../interface/DeleteModal";
 import { setLoading } from "../redux/slices/loading.slice";
 import { setSuccess } from "../redux/slices/success.slice";
 import "../styles/budgetDetail.css";
+import { getExpensesByBudgetApi } from "../api/expense.api";
+import ExpenseTableSkeleton from "../interface/ExpenseTableSkeleton";
+import ExpenseTable from "../components/Expense/ExpenseTable";
 
 const BudgetDetail = () => {
   const { budgetId } = useParams();
@@ -21,7 +24,7 @@ const BudgetDetail = () => {
 
   // State for budget and expenses
   const [budget, setBudget] = useState(passedBudget || null);
-  const [expenses, setExpenses] = useState([]);
+  const [expenses, setExpenses] = useState(false);
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
   const [editExpenseId, setEditExpenseId] = useState(null);
@@ -45,8 +48,19 @@ const BudgetDetail = () => {
       setBudget(res.budget);
     }
   };
+
+  const getExpensesByBudget = async () => {
+    const res = await getExpensesByBudgetApi(budgetId);
+    if (!res.success) {
+      dispatch(setError(res.message));
+    } else {
+      setExpenses(res.expenses);
+    }
+  };
+
   useEffect(() => {
     getBudgetById();
+    getExpensesByBudget();
   }, []);
 
   // Function to handle creation of budget from BudgetDialog
@@ -252,6 +266,17 @@ const BudgetDetail = () => {
           cancelClick={() => setDeleteModalOpen(false)}
         />
       )}
+
+      <div className="w-full flex items-center justify-center mt-5">
+        {expenses == false ? (
+          <ExpenseTableSkeleton className={"flex flex-col gap-2 w-[90%]"} />
+        ) : expenses.length > 0 ? (
+          <ExpenseTable expenses={expenses} setExpenses={setExpenses} />
+        ) : (
+          <div className="text-2xl">😔 No Expense Found</div>
+        )}
+      </div>
+
       {/* <div className="mt-8">
         <h3 className="text-lg font-semibold mb-4">Latest Expenses</h3>
         <table className="min-w-full bg-white border border-gray-200">

@@ -12,6 +12,20 @@ export const getUserAllExpenses = async () => {
   }
 };
 
+export const getExpensesByBudgetApi = async (budgetId) => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/api/expense/get/budget/${budgetId}`,
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
 export const updateUserExpensesApi = async (expenseId, data) => {
   try {
     const response = await axios.put(
