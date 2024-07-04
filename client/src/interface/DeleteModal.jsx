@@ -1,7 +1,7 @@
 import React from "react";
-import CrossIcon from "../../interface/Svgs/CrossIcon";
+import CrossIcon from "./Svgs/CrossIcon";
 
-export default function DeleteExpenseModal({ confirmClick, cancelClick }) {
+export default function DeleteModal({ confirmClick, cancelClick }) {
   return (
     <div
       onClick={cancelClick}

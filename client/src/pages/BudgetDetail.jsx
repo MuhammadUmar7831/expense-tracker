@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEdit,
-  faTrashAlt,
-  faSave,
-  faTimes,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import BudgetCard from "../components/Budget/BudgetCard";
-import BudgetDialog from "../components/Budget/BudgetDialog";
-import "../styles/budgetDetail.css";
-import { getBudgetByIdApi } from "../api/budget.api";
+import { deleteBudgetApi, getBudgetByIdApi } from "../api/budget.api";
 import { useDispatch } from "react-redux";
 import { setError } from "../redux/slices/error.slice";
 import AddExpenseModal from "../components/Budget/AddExpenseModal";
 import EditBudgetModal from "../components/Budget/EditBudgetModal";
+import DeleteModal from "../interface/DeleteModal";
+import { setLoading } from "../redux/slices/loading.slice";
+import { setSuccess } from "../redux/slices/success.slice";
+import "../styles/budgetDetail.css";
 
 const BudgetDetail = () => {
   const { budgetId } = useParams();
@@ -37,6 +34,7 @@ const BudgetDetail = () => {
   const [editBudgetAmount, setEditBudgetAmount] = useState(
     budget ? budget.amount : ""
   );
+  const [deleteModalOpen, setDeleteModalOpen] = useState();
   const dispatch = useDispatch();
 
   const getBudgetById = async () => {
@@ -151,6 +149,19 @@ const BudgetDetail = () => {
     addExpense();
   };
 
+  const deleteBudget = async () => {
+    dispatch(setLoading(true));
+    const res = await deleteBudgetApi(budgetId);
+    if (!res.success) {
+      dispatch(setError(res.message));
+    } else {
+      navigate("/dashboard/budget");
+      dispatch(setSuccess(res.message));
+    }
+    dispatch(setLoading(false));
+    setDeleteModalOpen(false);
+  };
+
   return (
     <div className="p-10">
       <h2 className="text-2xl font-bold">Budget Details</h2>
@@ -212,7 +223,7 @@ const BudgetDetail = () => {
               <FontAwesomeIcon icon={faEdit} className="mr-2" /> Edit
             </button>
             <button
-              onClick={handleDeleteBudget}
+              onClick={() => setDeleteModalOpen(true)}
               className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800"
             >
               <FontAwesomeIcon icon={faTrashAlt} className="mr-2" /> Delete
@@ -234,6 +245,12 @@ const BudgetDetail = () => {
         />
       ) : (
         <></>
+      )}
+      {deleteModalOpen && (
+        <DeleteModal
+          confirmClick={deleteBudget}
+          cancelClick={() => setDeleteModalOpen(false)}
+        />
       )}
       {/* <div className="mt-8">
         <h3 className="text-lg font-semibold mb-4">Latest Expenses</h3>

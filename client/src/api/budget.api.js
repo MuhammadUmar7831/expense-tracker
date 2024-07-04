@@ -51,3 +51,17 @@ export const updateBudgetApi = async (body) => {
     return error.response.data;
   }
 };
+
+export const deleteBudgetApi = async (budgetId) => {
+  try {
+    const response = await axios.delete(
+      `${API_BASE_URL}/api/budget/delete/${budgetId}`,
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};

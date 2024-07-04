@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import EditIcon from "../../interface/Svgs/EditIcon";
 import DeleteIcon from "../../interface/Svgs/DeleteIcon";
-import DeleteExpenseModal from "./DeleteExpenseModal";
 import { useDispatch } from "react-redux";
 import { setLoading } from "../../redux/slices/loading.slice";
 import { deleteUserExpensesApi } from "../../api/expense.api";
 import { setError } from "../../redux/slices/error.slice";
 import { setSuccess } from "../../redux/slices/success.slice";
+import DeleteModal from "../../interface/DeleteModal";
 
 export default function ExpenseTable({ expenses, setExpenses, openPopup }) {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -68,7 +68,7 @@ export default function ExpenseTable({ expenses, setExpenses, openPopup }) {
         </tbody>
       </table>
       {deleteModalOpen && (
-        <DeleteExpenseModal
+        <DeleteModal
           confirmClick={deleteExpense}
           cancelClick={() => setDeleteModalOpen(false)}
         />

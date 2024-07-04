@@ -139,7 +139,7 @@ export const updateBudget = async (req, res, next) => {
 
 export const deleteBudget = async (req, res, next) => {
   try {
-    const { budgetId } = req.body;
+    const { budgetId } = req.params;
     const userId = req.userId;
     if (!mongoose.Types.ObjectId.isValid(budgetId)) {
       return next(errorHandler(400, "Invalid Budget Id"));
@@ -156,7 +156,7 @@ export const deleteBudget = async (req, res, next) => {
     await Budget.deleteOne({ _id: budgetId });
     await Expense.deleteMany({ budget: budgetId });
     res.status(200).send({
-      sucess: true,
+      success: true,
       message: "Budget deleted",
     });
   } catch (error) {
