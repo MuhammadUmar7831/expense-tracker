@@ -36,3 +36,18 @@ export const addBudgetsApi = async (body) => {
     return error.response.data;
   }
 };
+
+export const updateBudgetApi = async (body) => {
+  try {
+    const response = await axios.put(
+      `${API_BASE_URL}/api/budget/update`,
+      body,
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};

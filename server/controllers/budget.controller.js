@@ -67,7 +67,6 @@ export const getBudgetByBudgetId = async (req, res, next) => {
     budget = budget.toObject();
     budget.spending = totalSpending;
     budget.items = itemCount;
-    console.log(budget);
     res.status(200).send({ success: true, message: "Budget Sent", budget });
   } catch (error) {
     next(error);

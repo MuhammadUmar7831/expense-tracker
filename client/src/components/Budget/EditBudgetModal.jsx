@@ -1,12 +1,50 @@
 import EmojiPicker from "emoji-picker-react";
 import React, { useState } from "react";
 import CrossIcon from "../../interface/Svgs/CrossIcon";
+import { updateBudgetApi } from "../../api/budget.api";
+import { useDispatch } from "react-redux";
+import { setError } from "../../redux/slices/error.slice";
+import { setSuccess } from "../../redux/slices/success.slice";
+import { setLoading } from "../../redux/slices/loading.slice";
 
 export default function EditBudgetModal({ budget, onClose }) {
   const [showEmoji, setShowEmoji] = useState(false);
   const [emoji, setEmoji] = useState(budget.emoji);
   const [name, setName] = useState(budget.name);
   const [amount, setAmount] = useState(budget.amount);
+  const dispatch = useDispatch();
+
+  const updateBudget = async (e) => {
+    e.preventDefault();
+    if (
+      !(
+        budget.amount === parseInt(amount) &&
+        budget.emoji === emoji.toString() &&
+        budget.name === name.toString()
+      )
+    ) {
+      dispatch(setLoading(true));
+
+      const body = {
+        name,
+        amount: parseInt(amount),
+        emoji,
+        budgetId: budget._id,
+      };
+      console.log(body);
+      const res = await updateBudgetApi(body);
+      if (!res.success) {
+        dispatch(setError(res.message));
+      } else {
+        budget.name = name;
+        budget.amount = amount;
+        budget.emoji = emoji;
+        dispatch(setSuccess(res.message));
+      }
+      dispatch(setLoading(false));
+    }
+    onClose();
+  };
   return (
     <div
       onClick={() => onClose()}
@@ -28,11 +66,8 @@ export default function EditBudgetModal({ budget, onClose }) {
             <CrossIcon />
           </button>
         </div>
-        <form
-          // onSubmit={handleCreateBudget}
-          className="flex flex-col gap-2"
-        >
-          <h3 className="text-2xl font-semibold">Create New Budget</h3>
+        <form onSubmit={updateBudget} className="flex flex-col gap-2">
+          <h3 className="text-2xl font-semibold">Edit Budget</h3>
           <div onClick={(e) => e.stopPropagation()} className="relative mt-5">
             <button
               onClick={() => setShowEmoji(true)}
@@ -80,10 +115,16 @@ export default function EditBudgetModal({ budget, onClose }) {
           />
           <button
             type="submit"
-            disabled={name.length <= 0 || amount < budget.spending}
+            disabled={
+              name.length <= 0 ||
+              amount < budget.spending ||
+              (budget.amount === parseInt(amount) &&
+                budget.emoji === emoji.toString() &&
+                budget.name === name.toString())
+            }
             className="bg-gray-900 hover:bg-gray-800 rounded py-2 px-4 text-center text-white cursor-pointer disabled:bg-opacity-50"
           >
-            Create Budget
+            Save
           </button>
         </form>
       </div>
