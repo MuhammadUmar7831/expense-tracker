@@ -51,24 +51,11 @@ const BudgetDetail = () => {
     getBudgetById();
   }, []);
 
-  useEffect(() => {
-    if (!budget) {
-      // If budget is not passed, open the dialog to create a new budget
-      openDialog();
-    }
-  }, [budget]);
-
   // Function to handle creation of budget from BudgetDialog
   const handleSaveBudget = (newBudget) => {
     setBudget(newBudget); // Set the new budget data
     setEditBudgetName(newBudget.name);
     setEditBudgetAmount(newBudget.amount);
-  };
-
-  // Function to open BudgetDialog
-  const openDialog = () => {
-    // Open dialog logic here if needed
-    // For example, you can manage a state to control the dialog visibility
   };
 
   // Function to add expense
@@ -233,7 +220,11 @@ const BudgetDetail = () => {
           </div>
         </div>
 
-        <AddExpenseModal />
+        {budget !== null ? (
+          <AddExpenseModal remaining={budget.amount - budget.spending} />
+        ) : (
+          <></>
+        )}
       </div>
 
       {budget !== null && isEditingBudget ? (
