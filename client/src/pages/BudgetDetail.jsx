@@ -11,7 +11,7 @@ import EditBudgetModal from "../components/Budget/EditBudgetModal";
 import DeleteModal from "../interface/DeleteModal";
 import { setLoading } from "../redux/slices/loading.slice";
 import { setSuccess } from "../redux/slices/success.slice";
-import { getExpensesByBudgetApi } from "../api/expense.api";
+import { addExpenseApi, getExpensesByBudgetApi } from "../api/expense.api";
 import ExpenseTableSkeleton from "../interface/ExpenseTableSkeleton";
 import ExpenseTable from "../components/Expense/ExpenseTable";
 import "../styles/budgetDetail.css";
@@ -62,6 +62,20 @@ const BudgetDetail = () => {
     setDeleteModalOpen(false);
   };
 
+  const addExpense = async (body) => {
+    dispatch(setLoading(true));
+    body.budget = budgetId;
+    const res = await addExpenseApi(body);
+    if (!res.success) {
+      dispatch(setError(res.message));
+    } else {
+      budget.spending += body.amount;
+      setExpenses([res.savedExpense, ...expenses]);
+      dispatch(setSuccess(res.message));
+    }
+    dispatch(setLoading(false));
+  };
+
   return (
     <div className="p-10">
       <h2 className="text-2xl font-bold">Budget Details</h2>
@@ -91,7 +105,10 @@ const BudgetDetail = () => {
         </div>
 
         {budget !== null ? (
-          <AddExpenseModal remaining={budget.amount - budget.spending} />
+          <AddExpenseModal
+            remaining={budget.amount - budget.spending}
+            handleSubmit={addExpense}
+          />
         ) : (
           <></>
         )}
