@@ -12,7 +12,7 @@ import { setSuccess } from "../../redux/slices/success.slice";
 import DeleteModal from "../../interface/DeleteModal";
 import EditExpenseModal from "./EditExpenseModal";
 
-export default function ExpenseTable({ expenses, setExpenses }) {
+export default function ExpenseTable({ expenses, setExpenses, budget = null }) {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const dispatch = useDispatch();
@@ -28,6 +28,10 @@ export default function ExpenseTable({ expenses, setExpenses }) {
           (expense) => expense._id !== deleteModalOpen._id
         );
       });
+      if (budget !== null) {
+        budget.spending -= deleteModalOpen.amount;
+        budget.items -= 1;
+      }
       dispatch(setSuccess(res.message));
     }
     setDeleteModalOpen(false);
@@ -49,6 +53,16 @@ export default function ExpenseTable({ expenses, setExpenses }) {
         dispatch(setError(res.message));
       } else {
         const updatedExpense = res.updatedExpense;
+        if (budget !== null) {
+          const previousExpense = expenses.find(
+            (expense) => expense._id === updatedExpense._id
+          );
+
+          if (previousExpense) {
+            budget.spending -= previousExpense.amount;
+            budget.spending += updatedExpense.amount;
+          }
+        }
         setExpenses((prevExpenses) => {
           const filteredExpenses = prevExpenses.filter(
             (expense) => expense._id !== editModalOpen._id
@@ -57,6 +71,7 @@ export default function ExpenseTable({ expenses, setExpenses }) {
             (a, b) => new Date(b.date) - new Date(a.date)
           );
         });
+
         dispatch(setSuccess(res.message));
       }
       setEditModalOpen(false);
