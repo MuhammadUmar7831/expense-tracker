@@ -6,18 +6,7 @@ import ExpenseTableSkeleton from "../interface/ExpenseTableSkeleton";
 import "../styles/expense.css";
 
 const Expense = () => {
-  const {
-    expenses,
-    setExpenses,
-    showPopup,
-    openPopup,
-    closePopup,
-    selectedExpense,
-    setSelectedExpense,
-    handleSubmit,
-    fetchData,
-    deleteExpense,
-  } = useExpense();
+  const { expenses, setExpenses, fetchData } = useExpense();
 
   useEffect(() => {
     fetchData();
@@ -32,21 +21,9 @@ const Expense = () => {
       {expenses == false ? (
         <ExpenseTableSkeleton className={"flex flex-col gap-2 w-[90%]"} />
       ) : expenses.length > 0 ? (
-        <ExpenseTable
-          expenses={expenses}
-          openPopup={openPopup}
-          setExpenses={setExpenses}
-        />
+        <ExpenseTable expenses={expenses} setExpenses={setExpenses} />
       ) : (
         <div className="text-2xl">😔 No Expense Found</div>
-      )}
-      {showPopup && (
-        <EditExpenseModal
-          closePopup={closePopup}
-          selectedExpense={selectedExpense}
-          handleSubmit={handleSubmit}
-          setSelectedExpense={setSelectedExpense}
-        />
       )}
     </div>
   );

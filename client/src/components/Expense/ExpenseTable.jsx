@@ -3,13 +3,18 @@ import EditIcon from "../../interface/Svgs/EditIcon";
 import DeleteIcon from "../../interface/Svgs/DeleteIcon";
 import { useDispatch } from "react-redux";
 import { setLoading } from "../../redux/slices/loading.slice";
-import { deleteUserExpensesApi } from "../../api/expense.api";
+import {
+  deleteUserExpensesApi,
+  updateUserExpensesApi,
+} from "../../api/expense.api";
 import { setError } from "../../redux/slices/error.slice";
 import { setSuccess } from "../../redux/slices/success.slice";
 import DeleteModal from "../../interface/DeleteModal";
+import EditExpenseModal from "./EditExpenseModal";
 
-export default function ExpenseTable({ expenses, setExpenses, openPopup }) {
+export default function ExpenseTable({ expenses, setExpenses }) {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
   const dispatch = useDispatch();
 
   const deleteExpense = async () => {
@@ -27,6 +32,36 @@ export default function ExpenseTable({ expenses, setExpenses, openPopup }) {
     }
     setDeleteModalOpen(false);
     dispatch(setLoading(false));
+  };
+
+  const editExpense = async (e) => {
+    e.preventDefault();
+    if (editModalOpen !== null && editModalOpen.change == true) {
+      const data = {
+        name: editModalOpen.name,
+        amount: editModalOpen.amount,
+        date: Date.now(),
+        budget: editModalOpen.budget,
+      };
+      dispatch(setLoading(true));
+      const res = await updateUserExpensesApi(editModalOpen._id, data);
+      if (!res.success) {
+        dispatch(setError(res.message));
+      } else {
+        const updatedExpense = res.updatedExpense;
+        setExpenses((prevExpenses) => {
+          const filteredExpenses = prevExpenses.filter(
+            (expense) => expense._id !== editModalOpen._id
+          );
+          return [updatedExpense, ...filteredExpenses].sort(
+            (a, b) => new Date(b.date) - new Date(a.date)
+          );
+        });
+        dispatch(setSuccess(res.message));
+      }
+      setEditModalOpen(false);
+      dispatch(setLoading(false));
+    }
   };
 
   const formatDate = (dateStr) => {
@@ -53,7 +88,10 @@ export default function ExpenseTable({ expenses, setExpenses, openPopup }) {
               <td>{row.amount}</td>
               <td>{formatDate(row.date)}</td>
               <td className="flex gap-2">
-                <button className="editicon" onClick={() => openPopup(row)}>
+                <button
+                  className="editicon"
+                  onClick={() => setEditModalOpen(row)}
+                >
                   <EditIcon />
                 </button>
                 <button
@@ -71,6 +109,16 @@ export default function ExpenseTable({ expenses, setExpenses, openPopup }) {
         <DeleteModal
           confirmClick={deleteExpense}
           cancelClick={() => setDeleteModalOpen(false)}
+        />
+      )}
+      {editModalOpen && (
+        <EditExpenseModal
+          closePopup={() => setEditModalOpen(false)}
+          selectedExpense={editModalOpen}
+          handleSubmit={editExpense}
+          setSelectedExpense={(e) => {
+            setEditModalOpen(e);
+          }}
         />
       )}
     </>
