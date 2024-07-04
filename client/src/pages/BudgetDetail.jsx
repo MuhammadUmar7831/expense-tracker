@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrashAlt, faSave, faTimes } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEdit,
+  faTrashAlt,
+  faSave,
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons";
 import BudgetCard from "../components/Budget/BudgetCard";
 import BudgetDialog from "../components/Budget/BudgetDialog";
 import "../styles/budgetDetail.css";
+import { getBudgetByIdApi } from "../api/budget.api";
+import { useDispatch } from "react-redux";
+import { setError } from "../redux/slices/error.slice";
+import AddExpenseModal from "../components/Budget/AddExpenseModal";
+import EditBudgetModal from "../components/Budget/EditBudgetModal";
 
 const BudgetDetail = () => {
   const { budgetId } = useParams();
@@ -21,8 +31,25 @@ const BudgetDetail = () => {
   const [editExpenseName, setEditExpenseName] = useState("");
   const [editExpenseAmount, setEditExpenseAmount] = useState("");
   const [isEditingBudget, setIsEditingBudget] = useState(false);
-  const [editBudgetName, setEditBudgetName] = useState(budget ? budget.name : "");
-  const [editBudgetAmount, setEditBudgetAmount] = useState(budget ? budget.amount : "");
+  const [editBudgetName, setEditBudgetName] = useState(
+    budget ? budget.name : ""
+  );
+  const [editBudgetAmount, setEditBudgetAmount] = useState(
+    budget ? budget.amount : ""
+  );
+  const dispatch = useDispatch();
+
+  const getBudgetById = async () => {
+    const res = await getBudgetByIdApi(budgetId);
+    if (!res.success) {
+      dispatch(setError(res.message));
+    } else {
+      setBudget(res.budget);
+    }
+  };
+  useEffect(() => {
+    getBudgetById();
+  }, []);
 
   useEffect(() => {
     if (!budget) {
@@ -71,12 +98,19 @@ const BudgetDetail = () => {
   const saveEditedExpense = () => {
     const updatedExpenses = expenses.map((expense) =>
       expense.id === editExpenseId
-        ? { ...expense, name: editExpenseName, amount: parseFloat(editExpenseAmount) }
+        ? {
+            ...expense,
+            name: editExpenseName,
+            amount: parseFloat(editExpenseAmount),
+          }
         : expense
     );
     setExpenses(updatedExpenses);
 
-    const totalSpent = updatedExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+    const totalSpent = updatedExpenses.reduce(
+      (sum, expense) => sum + expense.amount,
+      0
+    );
     setBudget({ ...budget, spent: totalSpent });
 
     setEditExpenseId(null);
@@ -86,16 +120,16 @@ const BudgetDetail = () => {
 
   // Function to delete expense
   const deleteExpense = (expenseId) => {
-    const updatedExpenses = expenses.filter((expense) => expense.id !== expenseId);
+    const updatedExpenses = expenses.filter(
+      (expense) => expense.id !== expenseId
+    );
     setExpenses(updatedExpenses);
 
-    const totalSpent = updatedExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+    const totalSpent = updatedExpenses.reduce(
+      (sum, expense) => sum + expense.amount,
+      0
+    );
     setBudget({ ...budget, spent: totalSpent });
-  };
-
-  // Function to edit budget
-  const handleEditBudget = () => {
-    setIsEditingBudget(true);
   };
 
   // Function to save edited budget
@@ -132,37 +166,10 @@ const BudgetDetail = () => {
 
   return (
     <div className="p-10">
-      {/* Render BudgetDialog if budget is not set */}
-      {/* {!budget && <BudgetDialog onClose={openDialog} onSaveBudget={handleSaveBudget} />} */}
-
-      <div className="flex justify-end mb-4">
-        {/* Conditionally render Edit and Delete buttons */}
-        {budget && (
-          <>
-            <button
-              onClick={handleEditBudget}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg mr-4 hover:bg-blue-600"
-            >
-              <FontAwesomeIcon icon={faEdit} className="mr-2" /> Edit Budget
-            </button>
-            <button
-              onClick={handleDeleteBudget}
-              className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
-            >
-              <FontAwesomeIcon icon={faTrashAlt} className="mr-2" /> Delete Budget
-            </button>
-          </>
-        )}
-      </div>
-
       <h2 className="text-2xl font-bold">Budget Details</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 mt-6 gap-6">
-        <div className="bg-white rounded-lg shadow-md p-4">
-          <h3 className="text-lg font-semibold mb-2">Budget Details</h3>
+        {/* <div className="bg-white rounded-lg shadow-md p-4">
           <div className="mb-4">
-            {budget && !isEditingBudget && (
-              <BudgetCard budget={budget} />
-            )}
             {budget && isEditingBudget && (
               <div className="border p-5 rounded-lg">
                 <h2 className="font-bold text-lg">Edit Budget</h2>
@@ -201,44 +208,43 @@ const BudgetDetail = () => {
               </div>
             )}
           </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-md p-4">
-          <h3 className="text-lg font-semibold mb-2">Add Expense</h3>
-          <div className="border p-5 rounded-lg">
-            <h2 className="font-bold text-lg">Add Expense</h2>
-            <div className="mt-2">
-              <h2 className="text-black font-medium my-1">Expense Name</h2>
-              <input
-                type="text"
-                placeholder="e.g, Home Decor"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="border w-full px-3 py-2 rounded-lg"
-              />
-            </div>
-            <div className="mt-2">
-              <h2 className="text-black font-medium my-1">Expense Amount</h2>
-              <input
-                type="number"
-                placeholder="e.g, 1000$"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                className="border w-full px-3 py-2 rounded-lg"
-              />
-            </div>
+        </div> */}
+        <div className="flex flex-col">
+          {budget && (
+            <BudgetCard
+              budget={budget}
+              link={false}
+              className={"w-full md:w-full lg:w-full h-fit"}
+            />
+          )}
+          <div className="flex justify-end mb-4">
             <button
-              disabled={!(name && amount)}
-              onClick={handleSubmit}
-              className="mt-3 w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+              onClick={() => setIsEditingBudget(true)}
+              className="bg-gray-900 text-white px-4 py-2 rounded-lg mr-4 hover:bg-gray-800"
             >
-              Add new Expense
+              <FontAwesomeIcon icon={faEdit} className="mr-2" /> Edit
+            </button>
+            <button
+              onClick={handleDeleteBudget}
+              className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800"
+            >
+              <FontAwesomeIcon icon={faTrashAlt} className="mr-2" /> Delete
             </button>
           </div>
         </div>
+
+        <AddExpenseModal />
       </div>
 
-      <div className="mt-8">
+      {budget !== null && isEditingBudget ? (
+        <EditBudgetModal
+          budget={budget}
+          onClose={() => setIsEditingBudget(false)}
+        />
+      ) : (
+        <></>
+      )}
+      {/* <div className="mt-8">
         <h3 className="text-lg font-semibold mb-4">Latest Expenses</h3>
         <table className="min-w-full bg-white border border-gray-200">
           <thead>
@@ -286,7 +292,9 @@ const BudgetDetail = () => {
               ) : (
                 <tr key={expense.id}>
                   <td className="border px-4 py-2">{expense.name}</td>
-                  <td className="border px-4 py-2">${expense.amount.toFixed(2)}</td>
+                  <td className="border px-4 py-2">
+                    ${expense.amount.toFixed(2)}
+                  </td>
                   <td className="border px-4 py-2">{expense.date}</td>
                   <td className="border px-4 py-2">
                     <FontAwesomeIcon
@@ -309,7 +317,7 @@ const BudgetDetail = () => {
             )}
           </tbody>
         </table>
-      </div>
+      </div> */}
     </div>
   );
 };
