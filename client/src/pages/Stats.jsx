@@ -66,20 +66,32 @@ const Stats = () => {
       <div className="p-4 w-full flex flex-col md:flex-row gap-5">
         <div className="w-full md:w-2/3 flex flex-col gap-5">
           {barChartData !== false ? (
-            <StackedBarchart barChartData={barChartData} />
+            numOfBudgets == 0 ? (
+              <h1 className="text-xl text-gray-900 font-semibold w-[90%] mx-auto mb-2">
+                😔 No Data 📈 Found For Budgets
+              </h1>
+            ) : (
+              <StackedBarchart barChartData={barChartData} />
+            )
           ) : (
             <StackedBarChartSkeleton />
           )}
+          <h1 className="text-xl text-gray-900 font-semibold w-[90%] mx-auto mb-2">
+            Latest Expenses
+          </h1>
           {latestExpenses !== false ? (
-            <div>
+            latestExpenses.length == 0 ? (
               <h1 className="text-xl text-gray-900 font-semibold w-[90%] mx-auto mb-2">
-                Latest Expenses
+                😔 No Expense Found
               </h1>
-              <ExpenseTable
-                expenses={latestExpenses}
-                setExpenses={setLatestExpenses}
-              />
-            </div>
+            ) : (
+              <div>
+                <ExpenseTable
+                  expenses={latestExpenses}
+                  setExpenses={setLatestExpenses}
+                />
+              </div>
+            )
           ) : (
             <ExpenseTableSkeleton />
           )}
@@ -90,14 +102,20 @@ const Stats = () => {
               Latest Budgets
             </h1>
             {latestBudgets !== false ? (
-              latestBudgets.map((latestBudget) => (
-                <div className="flex flex-col gap-2" key={latestBudget._id}>
-                  <BudgetCard
-                    budget={latestBudget}
-                    className={"w-full md:w-full lg:w-full"}
-                  />
-                </div>
-              ))
+              latestBudgets.length == 0 ? (
+                <h1 className="text-xl text-gray-900 font-semibold w-[90%] mx-auto mb-2">
+                  😔 No Budget Found
+                </h1>
+              ) : (
+                latestBudgets.map((latestBudget) => (
+                  <div className="flex flex-col gap-2" key={latestBudget._id}>
+                    <BudgetCard
+                      budget={latestBudget}
+                      className={"w-full md:w-full lg:w-full"}
+                    />
+                  </div>
+                ))
+              )
             ) : (
               <BudgetCardSkeleton className={"mt-5"} />
             )}
