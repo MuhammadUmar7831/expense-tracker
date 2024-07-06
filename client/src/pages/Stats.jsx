@@ -10,6 +10,8 @@ import useStats from "../hooks/useStats";
 import "../styles/stats.css";
 import OverviewCardSkeleton from "../interface/skeletons/OverviewCardSkeleton";
 import StackedBarChartSkeleton from "../interface/skeletons/StackedBarChartSkeleton";
+import BudgetCardSkeleton from "../interface/BudgetCardSkeleton";
+import ExpenseTableSkeleton from "../interface/ExpenseTableSkeleton";
 
 const Stats = () => {
   const {
@@ -68,7 +70,7 @@ const Stats = () => {
           ) : (
             <StackedBarChartSkeleton />
           )}
-          {latestExpenses && (
+          {latestExpenses !== false ? (
             <div>
               <h1 className="text-xl text-gray-900 font-semibold w-[90%] mx-auto mb-2">
                 Latest Expenses
@@ -78,24 +80,28 @@ const Stats = () => {
                 setExpenses={setLatestExpenses}
               />
             </div>
+          ) : (
+            <ExpenseTableSkeleton />
           )}
         </div>
         <div className="w-full md:w-1/3">
-          {latestBudgets && (
-            <div>
-              <h1 className="text-xl text-gray-900 font-semibold mb-2">
-                Latest Budgets
-              </h1>
-              {latestBudgets.map((latestBudget) => (
+          <div>
+            <h1 className="text-xl text-gray-900 font-semibold mb-2">
+              Latest Budgets
+            </h1>
+            {latestBudgets !== false ? (
+              latestBudgets.map((latestBudget) => (
                 <div className="flex flex-col gap-2" key={latestBudget._id}>
                   <BudgetCard
                     budget={latestBudget}
                     className={"w-full md:w-full lg:w-full"}
                   />
                 </div>
-              ))}
-            </div>
-          )}
+              ))
+            ) : (
+              <BudgetCardSkeleton className={"mt-5"} />
+            )}
+          </div>
         </div>
       </div>
     </div>
