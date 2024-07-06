@@ -40,7 +40,7 @@ const Stats = () => {
         <OverviewCard
           heading={"Total Budget"}
           text={`$${totalBudget}`}
-          icon={<BudgetIcon className={"w-8 h-8 text-gray-900"} />}
+          icon={<BudgetIcon className={"w-12 h-12 text-gray-900 hover:text-white p-2"} />}
         />
       ) : (
         <OverviewCardSkeleton />
@@ -49,7 +49,7 @@ const Stats = () => {
         <OverviewCard
           heading={"Total Spend"}
           text={`$${totalSpend}`}
-          icon={<ExpenseIcon className={"w-8 h-8 text-gray-900"} />}
+          icon={<ExpenseIcon className={"w-12 h-12 text-gray-900 hover:text-white p-2"} />}
         />
       ) : (
         <OverviewCardSkeleton />
@@ -58,7 +58,7 @@ const Stats = () => {
         <OverviewCard
           heading={"Number of Budgets"}
           text={numOfBudgets}
-          icon={<NumberIcon className={"w-8 h-8 text-gray-900"} />}
+          icon={<NumberIcon className={"w-12 h-12 text-gray-900 hover:text-white p-2"} />}
         />
       ) : (
         <OverviewCardSkeleton />
