@@ -6,7 +6,15 @@ import Expense from "../models/Expense.Model.js";
 export const getBudget = async (req, res, next) => {
   try {
     const userId = req.userId;
-    const budgets = await Budget.find({ user: userId }).lean();
+    const { stat } = req.query;
+
+    let budgetQuery = Budget.find({ user: userId }).lean();
+
+    if (stat === "true") {
+      budgetQuery = budgetQuery.sort({ updatedAt: -1 }).limit(3);
+    }
+
+    const budgets = await budgetQuery;
 
     const budgetsWithDetails = await Promise.all(
       budgets.map(async (budget) => {

@@ -3,6 +3,7 @@
   /* max-width: 800px;  */
   border-collapse: collapse;
   color: #000;
+  @apply mx-auto
   /* margin-top: 8rem; */
   /* margin-left: 15rem; */
 }

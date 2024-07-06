@@ -42,7 +42,10 @@ export const barchart = async (req, res, next) => {
       .sort({ createdAt: -1 })
       .limit(5);
 
-    const budgetData = [];
+    const budgetNames = [];
+    const spentAmounts = [];
+    const remainingAmounts = [];
+
     for (const budget of budgets) {
       const expenses = await Expense.aggregate([
         { $match: { budget: budget._id } },
@@ -51,17 +54,16 @@ export const barchart = async (req, res, next) => {
 
       const totalSpending = expenses.length > 0 ? expenses[0].totalSpending : 0;
 
-      budgetData.push({
-        budgetId: budget._id,
-        budgetName: budget.name,
-        budgetAmount: budget.amount,
-        totalSpending: totalSpending,
-      });
+      budgetNames.push(budget.name);
+      spentAmounts.push(totalSpending);
+      remainingAmounts.push(budget.amount - totalSpending);
     }
 
     res.status(200).send({
       success: true,
-      budgetData,
+      budgetNames,
+      spentAmounts,
+      remainingAmounts,
       message: "barchart of expense sent",
     });
   } catch (error) {

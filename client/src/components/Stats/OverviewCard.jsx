@@ -7,7 +7,7 @@ export default function OverviewCard(props) {
       <div className="stat-icon">{icon}</div>
       <div className="stat-info">
         <p className="stat-title">{heading}</p>
-        <p className="stat-value">${text}</p>
+        <p className="stat-value">{text}</p>
       </div>
     </div>
   );
