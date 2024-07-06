@@ -9,6 +9,7 @@ import ExpenseTable from "../components/Expense/ExpenseTable";
 import useStats from "../hooks/useStats";
 import "../styles/stats.css";
 import OverviewCardSkeleton from "../interface/skeletons/OverviewCardSkeleton";
+import StackedBarChartSkeleton from "../interface/skeletons/StackedBarChartSkeleton";
 
 const Stats = () => {
   const {
@@ -62,7 +63,11 @@ const Stats = () => {
       )}
       <div className="p-4 w-full flex flex-col md:flex-row gap-5">
         <div className="w-full md:w-2/3 flex flex-col gap-5">
-          <StackedBarchart barChartData={barChartData} />
+          {barChartData !== false ? (
+            <StackedBarchart barChartData={barChartData} />
+          ) : (
+            <StackedBarChartSkeleton />
+          )}
           {latestExpenses && (
             <div>
               <h1 className="text-xl text-gray-900 font-semibold w-[90%] mx-auto mb-2">
