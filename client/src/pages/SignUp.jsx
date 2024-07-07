@@ -5,8 +5,8 @@ import LogoIcon from "../interface/Svgs/LogoIcon";
 import EyeOnIcon from "../interface/Svgs/EyeOnIcon";
 import EyeOffIcon from "../interface/Svgs/EyeOffIcon";
 import useSignUp from "../hooks/useSignUp";
-import "../styles/signup.css";
 import useSignIn from "../hooks/useSignIn";
+// import "../styles/signup.css";
 
 export default function SignUp() {
   const {
