@@ -17,7 +17,7 @@ export const signup = async (req, res, next) => {
       .cookie("access_token", token, {
         httpOnly: true,
         secure: true,
-        sameSite: "strict",
+        sameSite: "none",
       })
       .status(201)
       .send({ user, success: true, message: "User Registered" });
@@ -43,7 +43,7 @@ export const signin = async (req, res, next) => {
       .cookie("access_token", token, {
         httpOnly: true,
         secure: true,
-        sameSite: "strict",
+        sameSite: "none",
       })
       .status(200)
       .send({ user, success: true, message: "User Logged in" });
@@ -73,7 +73,7 @@ export const googleOAuth = async (req, res, next) => {
         .cookie("access_token", token, {
           httpOnly: true,
           secure: true,
-          sameSite: "strict",
+          sameSite: "none",
         })
         .status(201)
         .send({
@@ -89,7 +89,7 @@ export const googleOAuth = async (req, res, next) => {
         .cookie("access_token", token, {
           httpOnly: true,
           secure: true,
-          sameSite: "strict",
+          sameSite: "none",
         })
         .status(200)
         .send({
