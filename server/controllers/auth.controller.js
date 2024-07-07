@@ -14,7 +14,11 @@ export const signup = async (req, res, next) => {
     const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
     const { password: pass, ...user } = newUser._doc;
     res
-      .cookie("access_token", token, { httpOnly: true, secure: true })
+      .cookie("access_token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+      })
       .status(201)
       .send({ user, success: true, message: "User Registered" });
   } catch (error) {
@@ -36,7 +40,11 @@ export const signin = async (req, res, next) => {
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
     const { password: pass, ...user } = validUser._doc;
     res
-      .cookie("access_token", token, { httpOnly: true, secure: true })
+      .cookie("access_token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+      })
       .status(200)
       .send({ user, success: true, message: "User Logged in" });
   } catch (error) {
@@ -62,7 +70,11 @@ export const googleOAuth = async (req, res, next) => {
       const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
       const { password: pass, ...userWithoutPassword } = newUser._doc;
       res
-        .cookie("access_token", token, { httpOnly: true, secure: true })
+        .cookie("access_token", token, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+        })
         .status(201)
         .send({
           user: userWithoutPassword,
@@ -73,11 +85,18 @@ export const googleOAuth = async (req, res, next) => {
       // Signin with Google OAuth
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
       const { password: pass, ...userWithoutPassword } = user._doc;
-      res.cookie("access_token", token, { httpOnly: true }).status(200).send({
-        user: userWithoutPassword,
-        success: true,
-        message: "User Logged in",
-      });
+      res
+        .cookie("access_token", token, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+        })
+        .status(200)
+        .send({
+          user: userWithoutPassword,
+          success: true,
+          message: "User Logged in",
+        });
     }
   } catch (error) {
     next(error);
