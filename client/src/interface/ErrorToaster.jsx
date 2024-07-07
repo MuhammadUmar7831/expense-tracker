@@ -21,7 +21,7 @@ export default function Error() {
   return (
     error && (
       <motion.div
-        className="bg-red-200 border-red-600 text-red-600 fixed top-2 left-2 border-l-4 p-4 rounded-md"
+        className="bg-red-50 border-red-600 text-red-600 fixed top-2 left-2 border-l-4 p-4 rounded-md"
         role="alert"
         initial={{ x: -100 }}
         animate={{ x: 0 }}

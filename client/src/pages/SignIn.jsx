@@ -4,9 +4,8 @@ import GoogleIcon from "../interface/Svgs/GoogleIcon";
 import LogoIcon from "../interface/Svgs/LogoIcon";
 import EyeOnIcon from "../interface/Svgs/EyeOnIcon";
 import EyeOffIcon from "../interface/Svgs/EyeOffIcon";
-import "../styles/signin.css";
 import useSignIn from "../hooks/useSignIn";
-import { googleOAuthApi } from "../api/auth.api";
+import "../styles/signin.css";
 
 export default function SignUp() {
   const {

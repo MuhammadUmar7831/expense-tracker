@@ -14,10 +14,10 @@ import { setSuccess } from "../redux/slices/success.slice";
 import { addExpenseApi, getExpensesByBudgetApi } from "../api/expense.api";
 import ExpenseTableSkeleton from "../interface/ExpenseTableSkeleton";
 import ExpenseTable from "../components/Expense/ExpenseTable";
-import "../styles/budgetDetail.css";
 import BudgetCardSkeleton from "../interface/BudgetCardSkeleton";
 import Skeleton from "../interface/Skeleton";
 import AddExpenseModalSkeleton from "../interface/AddExpenseModalSkeleton";
+import "../styles/budgetDetail.css";
 
 const BudgetDetail = () => {
   const { budgetId } = useParams();
@@ -146,7 +146,7 @@ const BudgetDetail = () => {
       )}
 
       <div className="w-full flex items-center justify-center mt-5">
-        {expenses == false ? (
+        {expenses === false ? (
           <ExpenseTableSkeleton className={"flex flex-col gap-2 w-[90%]"} />
         ) : expenses.length > 0 ? (
           <ExpenseTable

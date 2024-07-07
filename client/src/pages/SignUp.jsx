@@ -4,8 +4,9 @@ import GoogleIcon from "../interface/Svgs/GoogleIcon";
 import LogoIcon from "../interface/Svgs/LogoIcon";
 import EyeOnIcon from "../interface/Svgs/EyeOnIcon";
 import EyeOffIcon from "../interface/Svgs/EyeOffIcon";
-import "../styles/signup.css";
 import useSignUp from "../hooks/useSignUp";
+import "../styles/signup.css";
+import useSignIn from "../hooks/useSignIn";
 
 export default function SignUp() {
   const {
@@ -20,6 +21,7 @@ export default function SignUp() {
     toggleShowPassword,
     passwordStrength,
   } = useSignUp();
+  const { googleClick } = useSignIn();
 
   const buttonStyle =
     passwordStrength === "strong"
@@ -32,7 +34,10 @@ export default function SignUp() {
         <LogoIcon />
         <h1 className="text-center text-3xl">Sign Up</h1>
         <div className="w-full mt-5 text-md text-center">
-          <button className="flex justify-center items-center gap-2 w-full bg-gray-100 border rounded-md py-2 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none">
+          <button
+            onClick={googleClick}
+            className="flex justify-center items-center gap-2 w-full bg-gray-100 border rounded-md py-2 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
+          >
             <GoogleIcon /> Continue with Google
           </button>
         </div>

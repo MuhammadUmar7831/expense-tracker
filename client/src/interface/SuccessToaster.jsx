@@ -20,7 +20,7 @@ export default function Success() {
   return (
     success && (
       <motion.div
-        className="bg-green-200 border-green-600 text-green-600 fixed top-2 left-2 border-l-4 p-4 rounded-md"
+        className="bg-green-50 border-green-600 text-green-600 fixed top-2 left-2 border-l-4 p-4 rounded-md"
         role="alert"
         initial={{ x: -100 }}
         animate={{ x: 0 }}
