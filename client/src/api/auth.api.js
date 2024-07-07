@@ -31,7 +31,7 @@ export const signin = async (userData) => {
 
 export const signout = async () => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/api/auth/signout`, {
+    const response = await axios.delete(`${API_BASE_URL}/api/auth/signout`, {
       withCredentials: true,
     });
     return response.data;

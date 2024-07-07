@@ -13,7 +13,7 @@ const router = express.Router();
 router.get("/get/user", authenticate, getUser);
 router.post("/signup", signup);
 router.post("/signin", signin);
-router.post("/signout", authenticate, signout);
+router.delete("/signout", authenticate, signout);
 router.post("/google-oauth", googleOAuth);
 
 export default router;
