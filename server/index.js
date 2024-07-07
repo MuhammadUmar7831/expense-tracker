@@ -28,7 +28,12 @@ app.use("/api/expense", expenseRouter);
 app.use("/api/stats", statsRouter);
 
 app.get("/", (req, res) => {
-  return res.status(200).send({ message: "Expense Tracker Base Route" });
+  return res
+    .status(200)
+    .send({
+      message: "Expense Tracker Base Route",
+      client: process.env.CLIENT_URL,
+    });
 });
 
 // app.use((err, req, res, next) => {
