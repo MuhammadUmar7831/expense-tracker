@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import ExpenseTable from "../components/Expense/ExpenseTable";
-import EditExpenseModal from "../components/Expense/EditExpenseModal";
 import useExpense from "../hooks/useExpense";
 import ExpenseTableSkeleton from "../interface/ExpenseTableSkeleton";
 import "../styles/expense.css";
@@ -18,7 +17,7 @@ const Expense = () => {
         <h1 className="text-3xl font-semibold">My Expenses</h1>
         <p className="text-lg mt-2">Latest Expenses</p>
       </div>
-      {expenses == false ? (
+      {expenses === false ? (
         <ExpenseTableSkeleton className={"flex flex-col gap-2 w-[90%]"} />
       ) : expenses.length > 0 ? (
         <ExpenseTable expenses={expenses} setExpenses={setExpenses} />

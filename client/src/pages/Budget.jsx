@@ -1,11 +1,8 @@
 import React, { useEffect } from "react";
 import BudgetDialog from "../components/Budget/BudgetDialog";
 import BudgetCard from "../components/Budget/BudgetCard";
-import BeatLoader from "react-spinners/BeatLoader";
-import { loaderColor } from "../constants/loaderColor";
 import useBudget from "../hooks/useBudget";
 import "../styles/budget.css";
-import Skeleton from "../interface/Skeleton";
 import BudgetCardSkeleton from "../interface/BudgetCardSkeleton";
 
 const Budget = () => {
@@ -35,7 +32,7 @@ const Budget = () => {
             <span>+</span>
             <span>Create New Budget</span>
           </div>
-          {budgets == false ? (
+          {budgets === false ? (
             <>
               <BudgetCardSkeleton
                 className={"h-32 w-full md:w-[48%] lg:w-[33%] p-4"}
@@ -44,12 +41,14 @@ const Budget = () => {
                 className={"h-32 w-full md:w-[48%] lg:w-[33%] p-4"}
               />
             </>
-          ) : (
+          ) : budgets.length > 0 ? (
             <>
               {budgets.map((budget, index) => (
                 <BudgetCard key={index} budget={budget} />
               ))}
             </>
+          ) : (
+            <div className="text-2xl items-center flex px-4">😔 No Budget Found</div>
           )}
         </div>
       </div>

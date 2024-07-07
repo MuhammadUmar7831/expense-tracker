@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { signin } from "../api/auth.api";
+import { googleOAuthApi, googleOAuthApiServer, signin } from "../api/auth.api";
 import { setLoading } from "../redux/slices/loading.slice";
 import { setError } from "../redux/slices/error.slice";
 import { setUser } from "../redux/slices/user.slice";
@@ -13,7 +13,7 @@ export default function useSignIn() {
   const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSiginClick = async (e) => {
     e.preventDefault();
@@ -24,7 +24,26 @@ export default function useSignIn() {
     } else {
       dispatch(setUser(res.user));
       dispatch(setSuccess(res.message));
-      navigate("/dashboard")
+      navigate("/dashboard");
+    }
+    dispatch(setLoading(false));
+  };
+
+  const googleClick = async () => {
+    dispatch(setLoading(true));
+    const res = await googleOAuthApi();
+    if (!res.success) {
+      dispatch(setError(res.message));
+    } else {
+      const { displayName, email } = res.data.user;
+      const response = await googleOAuthApiServer({ name: displayName, email });
+      if (!response.success) {
+        dispatch(setError(response.message));
+      } else {
+        dispatch(setUser(response.user));
+        navigate("/dashboard");
+        dispatch(setSuccess(response.message));
+      }
     }
     dispatch(setLoading(false));
   };
@@ -37,5 +56,6 @@ export default function useSignIn() {
     setPassword,
     showPassword,
     setShowPassword,
+    googleClick,
   };
 }

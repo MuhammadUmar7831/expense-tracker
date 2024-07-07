@@ -6,6 +6,7 @@ import EyeOnIcon from "../interface/Svgs/EyeOnIcon";
 import EyeOffIcon from "../interface/Svgs/EyeOffIcon";
 import "../styles/signin.css";
 import useSignIn from "../hooks/useSignIn";
+import { googleOAuthApi } from "../api/auth.api";
 
 export default function SignUp() {
   const {
@@ -16,6 +17,7 @@ export default function SignUp() {
     setPassword,
     showPassword,
     setShowPassword,
+    googleClick,
   } = useSignIn();
 
   return (
@@ -24,7 +26,10 @@ export default function SignUp() {
         <LogoIcon />
         <h1 className="text-center text-3xl">Sign In</h1>
         <div className="w-full mt-5 text-md text-center">
-          <button className="flex justify-center items-center gap-2 w-full bg-gray-100 border rounded-md py-2 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none">
+          <button
+            onClick={googleClick}
+            className="flex justify-center items-center gap-2 w-full bg-gray-100 border rounded-md py-2 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
+          >
             <GoogleIcon /> Continue with Google
           </button>
         </div>
