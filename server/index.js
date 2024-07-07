@@ -18,6 +18,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: process.env.CLIENT_URL || "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
@@ -28,12 +29,10 @@ app.use("/api/expense", expenseRouter);
 app.use("/api/stats", statsRouter);
 
 app.get("/", (req, res) => {
-  return res
-    .status(200)
-    .send({
-      message: "Expense Tracker Base Route",
-      client: process.env.CLIENT_URL,
-    });
+  return res.status(200).send({
+    message: "Expense Tracker Base Route",
+    client: process.env.CLIENT_URL,
+  });
 });
 
 // app.use((err, req, res, next) => {
