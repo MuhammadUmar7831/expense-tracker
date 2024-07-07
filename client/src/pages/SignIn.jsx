@@ -5,7 +5,7 @@ import LogoIcon from "../interface/Svgs/LogoIcon";
 import EyeOnIcon from "../interface/Svgs/EyeOnIcon";
 import EyeOffIcon from "../interface/Svgs/EyeOffIcon";
 import useSignIn from "../hooks/useSignIn";
-import "../styles/signin.css"
+// import "../styles/signin.css"
 
 export default function SignIn() {
   const {
