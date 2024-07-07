@@ -8,12 +8,6 @@ import Success from "./interface/SuccessToaster";
 import Loading from "./interface/Loading";
 import PrivateRoute from "./components/PrivateRoute";
 import "./App.css";
-import "./styles/budget.css";
-import "./styles/budgetDetail.css";
-import "./styles/expense.css";
-import "./styles/signin.css";
-import "./styles/signup.css";
-import "./styles/stats.css";
 
 function App() {
   return (
