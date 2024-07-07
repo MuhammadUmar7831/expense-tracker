@@ -4,7 +4,7 @@ import { getUserAllExpenses } from "../api/expense.api";
 import { setError } from "../redux/slices/error.slice";
 
 export default function useExpense() {
-  const [expenses, setExpenses] = useState([]);
+  const [expenses, setExpenses] = useState(false);
   const dispatch = useDispatch();
 
   async function fetchData() {

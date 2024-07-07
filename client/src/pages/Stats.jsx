@@ -7,13 +7,15 @@ import StackedBarchart from "../components/Stats/StackedBarchart";
 import BudgetCard from "../components/Budget/BudgetCard";
 import ExpenseTable from "../components/Expense/ExpenseTable";
 import useStats from "../hooks/useStats";
-import "../styles/stats.css";
 import OverviewCardSkeleton from "../interface/skeletons/OverviewCardSkeleton";
 import StackedBarChartSkeleton from "../interface/skeletons/StackedBarChartSkeleton";
 import BudgetCardSkeleton from "../interface/BudgetCardSkeleton";
 import ExpenseTableSkeleton from "../interface/ExpenseTableSkeleton";
+import "../styles/stats.css";
+import { useSelector } from "react-redux";
 
 const Stats = () => {
+  const { user } = useSelector((state) => state.user);
   const {
     totalBudget,
     totalSpend,
@@ -35,94 +37,112 @@ const Stats = () => {
   }, []);
 
   return (
-    <div className="stats">
-      {totalBudget !== false ? (
-        <OverviewCard
-          heading={"Total Budget"}
-          text={`$${totalBudget}`}
-          icon={<BudgetIcon className={"w-12 h-12 text-gray-900 hover:text-white p-2"} />}
-        />
-      ) : (
-        <OverviewCardSkeleton />
-      )}
-      {totalSpend !== false ? (
-        <OverviewCard
-          heading={"Total Spend"}
-          text={`$${totalSpend}`}
-          icon={<ExpenseIcon className={"w-12 h-12 text-gray-900 hover:text-white p-2"} />}
-        />
-      ) : (
-        <OverviewCardSkeleton />
-      )}
-      {numOfBudgets !== false ? (
-        <OverviewCard
-          heading={"Number of Budgets"}
-          text={numOfBudgets}
-          icon={<NumberIcon className={"w-12 h-12 text-gray-900 hover:text-white p-2"} />}
-        />
-      ) : (
-        <OverviewCardSkeleton />
-      )}
-      <div className="p-4 w-full flex flex-col md:flex-row gap-5">
-        <div className="w-full md:w-2/3 flex flex-col gap-5">
-          {barChartData !== false ? (
-            numOfBudgets == 0 ? (
-              <h1 className="text-xl text-gray-900 font-semibold w-[90%] mx-auto mb-2">
-                😔 No Data 📈 Found For Budgets
-              </h1>
-            ) : (
-              <StackedBarchart barChartData={barChartData} />
-            )
-          ) : (
-            <StackedBarChartSkeleton />
-          )}
-          <h1 className="text-xl text-gray-900 font-semibold w-[90%] mx-auto mb-2">
-            Latest Expenses
-          </h1>
-          {latestExpenses !== false ? (
-            latestExpenses.length == 0 ? (
-              <h1 className="text-xl text-gray-900 font-semibold w-[90%] mx-auto mb-2">
-                😔 No Expense Found
-              </h1>
-            ) : (
-              <div>
-                <ExpenseTable
-                  expenses={latestExpenses}
-                  setExpenses={setLatestExpenses}
-                />
-              </div>
-            )
-          ) : (
-            <ExpenseTableSkeleton />
-          )}
-        </div>
-        <div className="w-full md:w-1/3">
-          <div>
-            <h1 className="text-xl text-gray-900 font-semibold mb-2">
-              Latest Budgets
-            </h1>
-            {latestBudgets !== false ? (
-              latestBudgets.length == 0 ? (
+    <>
+      <div>
+        <h1 className="px-6 pt-6 text-4xl font-bold">Hi, {user.name} 🖐️</h1>
+        <p className="px-6 pt-2 text-gray-500">Here's what happenning with your money, Lets Manage your expense</p>
+      </div>
+      <div className="stats">
+        {totalBudget !== false ? (
+          <OverviewCard
+            heading={"Total Budget"}
+            text={`$${totalBudget}`}
+            icon={
+              <BudgetIcon
+                className={"w-12 h-12 text-gray-900 hover:text-white p-2"}
+              />
+            }
+          />
+        ) : (
+          <OverviewCardSkeleton />
+        )}
+        {totalSpend !== false ? (
+          <OverviewCard
+            heading={"Total Spend"}
+            text={`$${totalSpend}`}
+            icon={
+              <ExpenseIcon
+                className={"w-12 h-12 text-gray-900 hover:text-white p-2"}
+              />
+            }
+          />
+        ) : (
+          <OverviewCardSkeleton />
+        )}
+        {numOfBudgets !== false ? (
+          <OverviewCard
+            heading={"Number of Budgets"}
+            text={numOfBudgets}
+            icon={
+              <NumberIcon
+                className={"w-12 h-12 text-gray-900 hover:text-white p-2"}
+              />
+            }
+          />
+        ) : (
+          <OverviewCardSkeleton />
+        )}
+        <div className="p-4 w-full flex flex-col md:flex-row gap-5">
+          <div className="w-full md:w-2/3 flex flex-col gap-5">
+            {barChartData !== false ? (
+              numOfBudgets == 0 ? (
                 <h1 className="text-xl text-gray-900 font-semibold w-[90%] mx-auto mb-2">
-                  😔 No Budget Found
+                  😔 No Data 📈 Found For Budgets
                 </h1>
               ) : (
-                latestBudgets.map((latestBudget) => (
-                  <div className="flex flex-col gap-2" key={latestBudget._id}>
-                    <BudgetCard
-                      budget={latestBudget}
-                      className={"w-full md:w-full lg:w-full"}
-                    />
-                  </div>
-                ))
+                <StackedBarchart barChartData={barChartData} />
               )
             ) : (
-              <BudgetCardSkeleton className={"mt-5"} />
+              <StackedBarChartSkeleton />
             )}
+            <h1 className="text-xl text-gray-900 font-semibold w-[90%] mx-auto mb-2">
+              Latest Expenses
+            </h1>
+            {latestExpenses !== false ? (
+              latestExpenses.length == 0 ? (
+                <h1 className="text-xl text-gray-900 font-semibold w-[90%] mx-auto mb-2">
+                  😔 No Expense Found
+                </h1>
+              ) : (
+                <div>
+                  <ExpenseTable
+                    expenses={latestExpenses}
+                    setExpenses={setLatestExpenses}
+                  />
+                </div>
+              )
+            ) : (
+              <ExpenseTableSkeleton />
+            )}
+          </div>
+          <div className="w-full md:w-1/3">
+            <div>
+              <h1 className="text-xl text-gray-900 font-semibold mb-2">
+                Latest Budgets
+              </h1>
+              {latestBudgets !== false ? (
+                latestBudgets.length == 0 ? (
+                  <h1 className="text-xl text-gray-900 font-semibold w-[90%] mx-auto mb-2">
+                    😔 No Budget Found
+                  </h1>
+                ) : (
+                  latestBudgets.map((latestBudget) => (
+                    <div className="flex flex-col gap-2" key={latestBudget._id}>
+                      <BudgetCard
+                        budget={latestBudget}
+                        className={"w-full md:w-full lg:w-full"}
+                      />
+                    </div>
+                  ))
+                )
+              ) : (
+                <BudgetCardSkeleton className={"mt-5"} />
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,24 +1,9 @@
-"use client"
-import React from 'react'
-import Image from "next/image";
-import { Button } from '@components/ui/button';
-import Link from 'next/link';
-function Header(){
-    const {user,isSignedIn}=useUser();
-    return(
-        <div classname='p-5 flex justify-between items-center border shadow'>
-            <Image src={'.logo.svg'}
-            alt='logo'
-            width={160}
-            height={100}/>
-            {isSignedIn?
-            <UserButton/> : 
-            <Link href={'/sign-in'}>
-            <Button>Get Started</Button>
-            </Link>
+import React from "react";
+
+export default function Header() {
+  return (
+    <div className="w-full h-fit bg-gray-900 px-4 py-6 text-white text-left text-xl flex gap-2 items-center justify-between">
+      <span>Expense Tracker</span>
+    </div>
+  );
 }
-        </div>
-        
-    )
-}
-export default Header

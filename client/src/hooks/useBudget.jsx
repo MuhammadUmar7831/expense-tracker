@@ -5,7 +5,7 @@ import { setError } from "../redux/slices/error.slice";
 
 export default function useBudget() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [budgets, setBudgets] = useState([]);
+  const [budgets, setBudgets] = useState(false);
   const disptach = useDispatch();
 
   const getAllBudgets = async () => {
