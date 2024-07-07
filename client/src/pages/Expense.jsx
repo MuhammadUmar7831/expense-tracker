@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import ExpenseTable from "../components/Expense/ExpenseTable";
 import useExpense from "../hooks/useExpense";
 import ExpenseTableSkeleton from "../interface/ExpenseTableSkeleton";
-import "../styles/expense.css";
+// import "../styles/expense.css";
 
 const Expense = () => {
   const { expenses, setExpenses, fetchData } = useExpense();

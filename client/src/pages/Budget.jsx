@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import BudgetDialog from "../components/Budget/BudgetDialog";
 import BudgetCard from "../components/Budget/BudgetCard";
 import useBudget from "../hooks/useBudget";
-import "../styles/budget.css";
 import BudgetCardSkeleton from "../interface/BudgetCardSkeleton";
+// import "../styles/budget.css";
 
 const Budget = () => {
   const {

@@ -11,8 +11,8 @@ import OverviewCardSkeleton from "../interface/skeletons/OverviewCardSkeleton";
 import StackedBarChartSkeleton from "../interface/skeletons/StackedBarChartSkeleton";
 import BudgetCardSkeleton from "../interface/BudgetCardSkeleton";
 import ExpenseTableSkeleton from "../interface/ExpenseTableSkeleton";
-import "../styles/stats.css";
 import { useSelector } from "react-redux";
+// import "../styles/stats.css";
 
 const Stats = () => {
   const { user } = useSelector((state) => state.user);

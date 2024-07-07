@@ -17,7 +17,7 @@ import ExpenseTable from "../components/Expense/ExpenseTable";
 import BudgetCardSkeleton from "../interface/BudgetCardSkeleton";
 import Skeleton from "../interface/Skeleton";
 import AddExpenseModalSkeleton from "../interface/AddExpenseModalSkeleton";
-import "../styles/budgetDetail.css";
+// import "../styles/budgetDetail.css";
 
 const BudgetDetail = () => {
   const { budgetId } = useParams();
