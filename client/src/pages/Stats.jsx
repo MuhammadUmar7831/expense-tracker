@@ -41,8 +41,13 @@ const Stats = () => {
     <>
       <div>
         <h1 className="px-6 pt-6 text-4xl font-bold">Hi, {user.name} 🖐️</h1>
-        <p className="px-6 pt-2 text-gray-500">Here's what happenning with your money, Lets Manage your expense</p>
-        <StatsExportButton />
+        <p className="px-6 pt-2 text-gray-500">
+          Here's what happenning with your money, Lets Manage your expense
+        </p>
+
+        <div className="p-2 flex justify-end">
+          <StatsExportButton />
+        </div>
       </div>
       <div className="stats">
         {totalBudget !== false ? (
