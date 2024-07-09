@@ -21,11 +21,11 @@ const BudgetCard = ({ budget, className, link = true }) => {
             </span>
           </div>
         </div>
-        <div className="text-gray-900 font-semibold text-2xl">${amount}</div>
+        <div className="text-gray-900 font-semibold text-2xl">Rs {amount}</div>
       </div>
       <div className="text-gray-500 text-sm flex justify-between mt-5">
-        <span>${spending} spent</span>
-        <span>${remaining} remaining</span>
+        <span>Rs {spending} spent</span>
+        <span>Rs {remaining} remaining</span>
       </div>
       <div className="w-full h-2 bg-gray-200 rounded-md mt-2">
         <div
