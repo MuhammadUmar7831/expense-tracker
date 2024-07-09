@@ -53,7 +53,7 @@ const Stats = () => {
         {totalBudget !== false ? (
           <OverviewCard
             heading={"Total Budget"}
-            text={`$${totalBudget}`}
+            text={`Rs ${totalBudget}`}
             icon={
               <BudgetIcon
                 className={"w-12 h-12 text-gray-900 hover:text-white p-2"}
@@ -66,7 +66,7 @@ const Stats = () => {
         {totalSpend !== false ? (
           <OverviewCard
             heading={"Total Spend"}
-            text={`$${totalSpend}`}
+            text={`Rs ${totalSpend}`}
             icon={
               <ExpenseIcon
                 className={"w-12 h-12 text-gray-900 hover:text-white p-2"}
